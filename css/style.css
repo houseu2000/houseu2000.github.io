@@ -1,0 +1,270 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	font-size: 16px;
+}
+
+
+
+
+/*调整logo元素的大小位置等等,可以自己尝试设置*/
+.logo{
+	border-top: 2px solid #CCCCCC; /*分界线*/
+	width: 100%;
+	text-align: center;
+	margin-top: 50px;
+}
+.logo img{
+	margin-top: 30px;
+}
+.logo h4{
+	cursor: pointer; /*鼠标触手标志*/
+	font-size: 35px;
+	letter-spacing: 2px;
+	margin-top: 20px;
+}
+
+.logo p{
+	font-size: 20px;
+	letter-spacing: 2px;
+	margin-top: 20px;
+	margin-bottom: 5px;    /*或者可以直接用margin 上右下左的顺序*/
+}
+
+.logo h4:hover{/*设置点触反应，鼠标放上去会变色哦*/
+	color: #ce8460;
+}
+
+
+
+
+
+/*导航部分nav*/
+.nav{
+	width: 100%;
+	border-top: 2px solid #CCCCCC; /*分界线*/
+	border-bottom: 2px solid #CCCCCC;
+}
+.nav ul{
+	display: flex;		/*自动弹性布局*/
+	justify-content: center;
+	padding : 10px 0;
+}
+.nav ul li{
+	list-style: none; /*取消自动的点点*/
+	margin: 0 20px;
+}
+.nav ul li a{
+	color: #333;
+	text-decoration: none;
+}
+.nav ul li a:hover{/*设置点触反应，鼠标放上去会变色哦*/
+	color: #ce8460;
+}
+
+
+
+
+.banner{
+	width: 820px;
+	margin: 20px auto;
+}
+
+.me{
+	width: 200px;
+	text-align: left;
+	margin: 10px 0;
+	float: left;
+	overflow: hidden;
+}
+.about{
+	float: right;
+	width: 620px;
+}
+.about p{
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: justify;
+	line-height: 30px;
+}
+
+
+
+.connect{
+	width: 620px;
+	margin-left: 200px;
+}
+.connect p{
+	margin-top: 20px;
+	margin-bottom: 0px;
+	text-align: justify;
+	line-height: 30px;
+}
+
+
+.edu{
+	width: 820px;
+	margin: 20px auto;
+	border-top: 2px solid #CCCCCC;   /*分界线*/
+}
+.edu h2{
+	margin: 20px auto;
+}
+
+.edu p{
+	font-size: 16px;
+	line-height: 20px;
+	line-height: 30px;
+}
+
+
+.res{
+	width: 820px;
+	margin: 20px auto;
+	border-top: 2px solid #CCCCCC;   /*分界线*/
+}
+.res h2{
+	margin: 20px auto;
+}
+.missdata{
+	width: 100%;
+	margin: 10px 0;
+
+}
+.missdata p{
+	text-align: justify;
+	line-height: 25px;
+}
+
+ 
+
+
+
+
+
+
+.viv h3{
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+.viv{
+	width: 100%;
+	margin: 10px 0;
+
+}
+.viv p{
+	text-align: justify;
+	line-height: 25px;
+}
+
+
+
+
+
+
+
+.timo h3{
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+.timo{
+	width: 100%;
+	margin: 10px 0;
+
+}
+.timo p{
+	text-align: justify;
+	line-height: 25px;
+}
+
+
+
+
+
+.pub{
+	width: 820px;
+	margin: 20px auto;
+	border-top: 2px solid #CCCCCC;   /*分界线*/
+}
+.pub h2{
+	margin: 20px auto;
+}
+
+.pub p{
+	font-size: 16px;
+	text-align: justify;
+	line-height: 20px;
+	line-height: 30px;
+}
+
+
+
+.pri{
+	width: 820px;
+	margin: 20px auto;
+	border-top: 2px solid #CCCCCC;   /*分界线*/
+}
+.pri h2{
+	margin: 20px auto;
+}
+
+.pri p{
+	font-size: 16px;
+	text-align: justify;
+	line-height: 20px;
+	line-height: 30px;
+}
+
+
+
+.oth{
+	width: 820px;
+	margin: 20px auto;
+	border-top: 2px solid #CCCCCC;   /*分界线*/
+}
+.oth h2{
+	margin: 20px auto;
+}
+
+.oth p{
+	font-size: 16px;
+	text-align: justify;
+	line-height: 20px;
+	line-height: 30px;
+}
+
+
+.inter h3{
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+.inter{
+	width: 100%;
+	margin: 10px 0;
+
+}
+.inter p{
+	text-align: justify;
+	line-height: 25px;
+}
+
+
+
+
+.elife h3{
+	margin-top: 50px;
+	margin-bottom: 30px;
+}
+.elife{
+	width: 100%;
+	margin: 10px 0;
+
+}
+.elife p{
+	text-align: justify;
+	line-height: 25px;
+	margin-bottom: 30px;
+}

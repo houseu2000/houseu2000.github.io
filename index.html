@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>侯佳乐的个人网站</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		
+		<div class="nav">
+			<!-- 导航栏标签-->
+			<ul>
+				<li>
+					<a href="">About me</a>
+				</li>
+				<li>
+					<a href="#one">Education</a>
+				</li>
+				<li>
+					<a href="#two">Research</a>
+				</li>
+				<li>
+					<a href="#three">Publication</a>
+				</li>
+				<li>
+					<a href="#four">Prizes</a>
+				</li>
+				<li>
+					<a href="#five">Others</a>
+				</li>
+			</ul>		
+		</div>
+		
+		<div class="banner">
+			<div class="me">
+				<img src="img/me.jpg" width="120">
+			</div>
+			<div class="about">
+				<h1>Jiale Hou 侯佳乐</h1>
+				<p>
+					Hi, welcome to my website! I'm Jiale Hou, an MS student majoring in civil engineering at 
+					<a href="https://www.seu.edu.cn/english/" >Southeast University(China)</a>. 
+					At present, I am carrying out research on the application of machine learning in structural health monitoring under the guidance of 
+					<a href="https://civil.seu.edu.cn/2012/0221/c1269a93760/page.htm" >Prof. Chunfeng Wan</a>
+					 and <a href="https://civil.seu.edu.cn/2009/1109/c1269a93718/page.htm" >Prof. Youliang Ding</a>.
+					 My research interests are: physics informed machine learning, transfer learning and Bayesian learning.
+				</p>
+			</div>
+			
+			
+			
+			
+			<div class="connect">
+				<h2>Contact me</h2>
+				<p>
+					<b>Email：</b><a href="mailto:houseu@seu.edu.cn" >houseu@seu.edu.cn</a></br>
+					<b>Phone and Wechat：</b>+86 199 0967 6556</br>
+				</p>
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		<div class="edu" id="one">
+			<h2>Education</h2>
+			<p>
+				<b>2016 ~ 2020, Bachelor in civil engineering, GPA 85.0/100</b></br>
+				Department of Civil Engineering, <a href="https://www.xauat.edu.cn/en/" >Xi'an University of Architecture and Technology(XAUAT)</a>, PRC</br>
+				<b>2020 ~ now, Master in structural engineering, GPA 88.6/100</b></br>
+				Department of Civil Engineering, Southeast University, PRC</br>
+			</p>
+		</div>
+		
+		
+		
+		<div class="res" id="two">
+			<h2>Research</h2>
+
+
+
+
+			<div class="missdata">
+				<h3>1. Missing data imputation for structural health monitoring system </h3>
+				<img src="img/res1.PNG" width="800">
+				<p>
+					Sensors are the most important part of structural health monitoring systems (SHMSs), however they
+					will be abnormal sometimes due to their deterioration or environment effect, 
+					which will result in data loss during the health monitoring process of the structures. 
+					We developed a novel data imputation framework based on<b> deep learning and data augmentation technique</b>, 
+					which enables the application of data modeling and missing data imputation based on the less 
+					remaining data when multiple sensors fail. Data imputation can be made between the same type 
+					of sensors (STSs) and also different types of sensors (DTSs). The proposed methods are verified on the dataset of a real concrete bridge 
+					located in China, and results show that proposed method achieves good performance.Besides, we are now trying to use
+					<b>Bayesian tensor learning </b>to impute missing and abnormal data in SHMSs.
+				</p>
+			</div>
+			
+			<div class="viv">
+				<h3>2. Automatic identification of vortex induced vibration of long span bridges </h3>
+				<img src="img/res2.PNG" width="800">
+				<p>
+					This study proposes an automatic vortex induced vibration (VIV) identification method using<b> support vector machine (SVM)</b> 
+					and the <b>transfer learning technique</b>, 
+					which can identify VIV in real-time or in the SHM historical dataset. It is worth noting that this 
+					method does not need VIV data on the target dataset. The strong generalization ability and high 
+					accuracy and efficiency of the proposed method are 
+					verified on the SHM dataset of a long-span suspension bridge and simulated VIV acceleration data 
+					of 2-DOF system.
+				</p>
+			</div>
+			
+			<div class="timo">
+				<h3>3. Automatic identification of vortex induced vibration of long span bridges </h3>
+				<img src="img/res3.jpg" width="800">
+				<p>
+					Since the Timoshenko beam was introduced to engineering fields, many efforts have been devoted and many problems are yet to handle.
+					Based on the classical Timoshenko beam theory,<b> the rotary inertia caused by the shear deformation 
+					is further considered</b> and the dynamic response under forced vibration is derived. It is found that the effect of the shear deformation induced rotary inertia is small for 
+					   thin and slender beams; however, it is evident for short and deep beams with high stiffness. We believed that the proposed modified Timoshenko beam theory is a more reasonable, uncomplicated, and accurate
+						 model to calculate the responses of the beam under forced vibration.
+				</p>
+			</div>
+
+		</div>
+		
+		
+		
+		
+		
+		<div class="pub" id="three">
+			<h2>Publications</h2>
+			<p>
+				[1] <b>J.L. Hou</b>, H.C. Jiang, C.F. Wan*, L.T. Yi, S. Gao, Y.L. Ding, S.T. Xue*, Deep learning and data augmentation based data imputation for structural health monitoring system in multi-sensor damaged state, Measurement 196 (2022) 111206.
+				[<a href="https://www.sciencedirect.com/science/article/pii/S0263224122004584" >Link</a>]</br>
+				[2] <b>J.L. Hou</b>, X.B. Xiong, E.S. Ge, C.F. Wan*, Y.L. Ding, S.T. Xue. Automatic identification of vortex induced vibration of long-span bridges using kernel mean matching method. Eighth World Conference on Structural Control and Monitoring, 2022. (In press)</br>
+				[3] C.F. Wan*, <b>J.L. Hou</b>, S.T. Xue. Forced vibration of a novel beam model considering the shear deformation induced rotary inertia. (preparing submit to Mechanics of Advanced Materials and Structures)</br>
+				[4] L.T. Yi, Y.L. Ding*, <b>J.L. Hou</b>, Z.X. Yue, H.W. Zhao. Structural health monitoring data cleaning based on Bayesian robust tensor learning. Structural Health Monitoring (under review)</br>
+			</p>
+		</div>
+		
+		
+		<div class="pri" id="four">
+			<h2>Prizes</h2>
+			<p>
+				1.	<b>Second Scholarship for Graduates</b>, Southeast University, 2021</br>
+				2.	<b>Excellent Graduate Student</b>, Southeast University, 2021</br>
+				3.	<b>Special Prize Winner</b> of <I>12th Mathematics Competition of Shaanxi Student</I>, 2019</br>
+				4.	<b>Outstanding Student Cadres Prize</b>, Xi’an University of Architecture and Technology, 2018</br>
+				5.	<b>Outstanding Student Prize</b>, Xi’an University of Architecture and Technology, 2017</br>
+				6.	<b>JZFZ Scholarship</b>, Jizhun Fangzhong Co., Ltd, 2017</br>
+			</p>
+		</div>
+		
+		
+		
+		<div class="oth" id="five">
+			<h2>Others</h2>
+			
+			<div class="inter">
+				<h3> Intership </h3>				
+				<p>
+					<b>Swivel Construction Monitoring of Huanshi South Road Bridge</b></br>
+					 Dongguan, Guangdong Province, April to June 2022
+					
+				</p>
+				<img src="img/inter1.PNG" width="800">
+			</div>
+			
+			<div class="elife">
+				<h3> Extracurricular life </h3>	
+				<p>
+					I love playing table tennis and have won the title of <b>'National Second Grade Sportsman'</b> in my junior high school. 
+					I have many hobbies, such as fitness, hip-hop music, and philosophy.
+					
+				</p>
+				<img src="img/1.PNG" width="800">
+
+					
+
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<div class="logo">
+			<img src="img/southeast.PNG" width="100">
+			<h4>Jiale Hou</h4>
+			<p> Welcome to my website! </p>
+		</div>
+		
+		
+		
+
+		
+
+		
+	</body>
+</html>
