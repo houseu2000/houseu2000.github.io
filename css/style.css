@@ -105,6 +105,8 @@ body{
 }
 
 
+
+
 .edu{
 	width: 820px;
 	margin: 20px auto;
@@ -112,6 +114,15 @@ body{
 }
 .edu h2{
 	margin: 20px auto;
+	color: #ce8460;
+}
+.edu h2::before{
+	content: '';
+	display: inline-block;
+	width: 5px;
+	height: 25px;
+	margin-right: 10px;
+	background: #ce8460;
 }
 
 .edu p{
@@ -121,6 +132,11 @@ body{
 }
 
 
+
+
+
+
+
 .pro{
 	width: 820px;
 	margin: 20px auto;
@@ -128,6 +144,15 @@ body{
 }
 .pro h2{
 	margin: 20px auto;
+	color: #ce8460;
+}
+.pro h2::before{
+	content: '';
+	display: inline-block;
+	width: 5px;
+	height: 25px;
+	margin-right: 10px;
+	background: #ce8460;
 }
 
 .pro p{
@@ -145,6 +170,15 @@ body{
 }
 .res h2{
 	margin: 20px auto;
+	color: #ce8460;
+}
+.res h2::before{
+	content: '';
+	display: inline-block;
+	width: 5px;
+	height: 25px;
+	margin-right: 10px;
+	background: #ce8460;
 }
 .missdata{
 	width: 100%;
@@ -208,6 +242,15 @@ body{
 }
 .pub h2{
 	margin: 20px auto;
+	color: #ce8460;
+}
+.pub h2::before{
+	content: '';
+	display: inline-block;
+	width: 5px;
+	height: 25px;
+	margin-right: 10px;
+	background: #ce8460;
 }
 
 .pub p{
@@ -226,6 +269,15 @@ body{
 }
 .pri h2{
 	margin: 20px auto;
+	color: #ce8460;
+}
+.pri h2::before{
+	content: '';
+	display: inline-block;
+	width: 5px;
+	height: 25px;
+	margin-right: 10px;
+	background: #ce8460;
 }
 
 .pri p{
@@ -240,10 +292,20 @@ body{
 .oth{
 	width: 820px;
 	margin: 20px auto;
+	
 	border-top: 2px solid #CCCCCC;   /*分界线*/
 }
 .oth h2{
 	margin: 20px auto;
+	color: #ce8460;
+}
+.oth h2::before{
+	content: '';
+	display: inline-block;
+	width: 5px;
+	height: 25px;
+	margin-right: 10px;
+	background: #ce8460;
 }
 
 .oth p{
