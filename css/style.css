@@ -31,7 +31,7 @@ body{
 	font-size: 20px;
 	letter-spacing: 2px;
 	margin-top: 20px;
-	margin-bottom: 5px;    /*或者可以直接用margin 上右下左的顺序*/
+	margin-bottom: 50px;    /*或者可以直接用margin 上右下左的顺序*/
 }
 
 .logo h4:hover{/*设置点触反应，鼠标放上去会变色哦*/
@@ -88,7 +88,7 @@ body{
 	margin-top: 20px;
 	margin-bottom: 20px;
 	text-align: justify;
-	line-height: 30px;
+	line-height: 25px;
 }
 
 
@@ -116,6 +116,23 @@ body{
 
 .edu p{
 	font-size: 16px;
+	line-height: 20px;
+	line-height: 30px;
+}
+
+
+.pro{
+	width: 820px;
+	margin: 20px auto;
+	border-top: 2px solid #CCCCCC;   /*分界线*/
+}
+.pro h2{
+	margin: 20px auto;
+}
+
+.pro p{
+	font-size: 16px;
+	text-align: justify;
 	line-height: 20px;
 	line-height: 30px;
 }
