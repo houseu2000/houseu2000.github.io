@@ -1,2 +1,2 @@
-# houseu.github.io
+# me
 Hi, I'm Jiale Hou, an MS student majoring in civil engineering at Southeast University(China). At present, I am carrying out research on the application of machine learning in structural health monitoring under the guidance of Prof. Chunfeng Wan and Prof. Youliang Ding. My research interests are: physics informed machine learning, transfer learning and structural health monitoring. You can visit my website via https://houseu2000.github.io/houseu.github.io/
