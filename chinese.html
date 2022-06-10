@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Jiale Hou's page</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		
+		<div class="nav">
+			<!-- 导航栏标签-->
+			<ul>
+				<li>
+					<a href="">关于我</a>
+				</li>
+				<li>
+					<a href="#one">教育</a>
+				</li>
+				<li>
+					<a href="#two">研究</a>
+				</li>
+				<li>
+					<a href="#dan">项目</a>
+				</li>
+				<li>
+					<a href="#three">论文</a>
+				</li>
+				<li>
+					<a href="#four">获奖</a>
+				</li>
+				<li>
+					<a href="#five">其他</a>
+				</li>
+				<li>
+					<a href="index.html">English version</a>
+				</li>
+			</ul>		
+		</div>
+		
+		<div class="banner">
+			<div class="me">
+				<img src="img/me.jpg" width="120">
+			</div>
+			<div class="about">
+				<h1>Jiale Hou 侯佳乐</h1>
+				<p>
+					嗨！我是侯佳乐，目前就读于<a href="https://www.seu.edu.cn/english/" >东南大学</a>土木工程学院，是一名土木工程二年级的硕士研究生。
+					目前我的主要研究方向是桥梁结构健康监测中的机器学习，我的导师是<a href="https://civil.seu.edu.cn/2012/0221/c1269a93760/page.htm" >万春风教授</a>
+					和<a href="https://civil.seu.edu.cn/2009/1109/c1269a93718/page.htm" >丁幼亮教授</a>。我的研究兴趣有：物理信息嵌入的机器学习，迁移学习，贝叶斯学习。
+				</p>
+			</div>
+			
+			
+			
+			
+			<div class="connect">
+				<h2>联系方式</h2>
+				<p>
+					<b>Email：</b><a href="mailto:houseu@seu.edu.cn" >houseu@seu.edu.cn</a></br>
+					<b>电话/微信：</b>+86 199 0967 6556</br>
+				</p>
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		<div class="edu" id="one">
+			<h2>教育</h2>
+			<p>
+				<b>2016 ~ 2020, 本科, 平均成绩 85.0/100</b></br>
+				土木工程（B+，全国排名15）, <a href="https://www.xauat.edu.cn/en/" ></a> 西安建筑科技大学</br>
+				<b>2020 至今, 硕士, 平均成绩 88.6/100</b></br>
+				土木工程（A+，全国排名并列1）, 东南大学
+			</p>
+		</div>
+		
+		
+
+		
+		
+		
+		<div class="res" id="two">
+			<h2>研究</h2>
+
+
+
+
+			<div class="missdata">
+				<h3>1. 基于机器学习的健康监测系统缺失数据的修复 </h3>
+				<img src="img/res1.PNG" width="800">
+				<p>
+					传感器是结构健康监测系统（SHMSs）最重要的组成部分，然而传感器易受环境影响而损坏或产生异常数据，
+					这将导致结构健康监测过程中的数据丢失。
+					我们基于深度学习和数据增强技术开发了一个新的缺失数据修复框架，当SHMSs中多个传感器发生损伤时仍可使用剩余数据进行修复。
+					该框架可以分别在同一类型传感器（STS）和不同类型的传感器（DTS）补充缺失的加速度或者挠度数据。
+					该方法在一座混凝土桥梁的健康监测数据集上得到了验证。此外，我们现在正在尝试使用<b>贝叶斯张量学习</b>，用于修复SHMSs中长周期的温度或温致响应缺失和异常数据。
+				</p>
+			</div>
+			
+			<div class="viv">
+				<h3>2. 基于迁移学习的大跨桥梁结构涡激振动识别 </h3>
+				<img src="img/res2.PNG" width="800">
+				<p>
+					本研究提出了一种基于领域自适应和支持向量机（SVM）的涡激振动（VIV）自动识别方法可以实时或在SHM历史数据集中识别VIV。
+					特别的是，这种方法不需要目标桥梁上的VIV数据，适用于新建桥梁或者没有记录到VIV数据的桥梁，
+					并且具有泛化能力强，效率高的优点。所提方法的准确性和效率在大跨度悬索桥的SHM数据集和双自由度动力系统的模拟VIV加速度数据上得到了验证。
+				</p>
+			</div>
+			
+			<div class="timo">
+				<h3>3. 修正Timoshenko梁受迫振动响应的求解计算 </h3>
+				<img src="img/res3.jpg" width="800">
+				<p>
+					Timoshenko梁已经被广泛用于很多工程领域，对此研究人员付出了很多的努力，
+					但Timoshenko理论的计算误差有待进一步缩小。我们基于经典Timoshenko梁理论，
+					进一步考虑剪切变形引起的转动惯量，推导了修正Timoshenko梁受迫振动下的动力响应。
+					研究发现，对于细长梁，剪切变形引起的转动惯量的影响很小；然而，对于具有高刚度的短梁和深梁来说，
+					其影响不可忽视。我们认为，修正Timoshenko梁理论是计算梁在强迫振动下响应的更合理、更简单和更精确的模型。
+				</p>
+			</div>
+
+		</div>
+		
+		
+		<div class="pro" id="dan">
+			<h2>项目</h2>
+			<p>
+				1.基于机器学习的桥梁监测数据处理与安全评估研究 (SJCX21_0053), <I>江苏省研究生科研与实践创新计划</I>, 2021-2022.  <b>(主持，在研)</b></br>
+				2.大跨缆索体系桥梁涡激振动自适应预警和全过程数字建模,  <I>浙江新一代人工只能实验室开放课题</I>, 2022. <b>(主持，在研)</b></br>
+				3.基于人工智能的桥梁监测数据挖掘与建模方法研究(KYCX21_0113),  <I>江苏省研究生科研与实践创新计划</I>, 2021. <b>(参与，在研)</b>
+		
+			</p>
+		</div>
+		
+		
+		<div class="pub" id="three">
+			<h2>论文</h2>
+			<p>
+				[1] <b>J.L. Hou</b>, H.C. Jiang, C.F. Wan*, L.T. Yi, S. Gao, Y.L. Ding, S.T. Xue*, Deep learning and data augmentation based data imputation for structural health monitoring system in multi-sensor damaged state, Measurement 196 (2022) 111206.
+				[<a href="https://www.sciencedirect.com/science/article/pii/S0263224122004584" >Link</a>]</br>
+				[2] <b>J.L. Hou</b>, X.B. Xiong, E.S. Ge, C.F. Wan*, Y.L. Ding, S.T. Xue. Automatic identification of vortex induced vibration of long-span bridges using kernel mean matching method. Eighth World Conference on Structural Control and Monitoring, 2022. (In press)</br>
+				[3] C.F. Wan*, <b>J.L. Hou</b>, S.T. Xue. Forced vibration of a novel beam model considering the shear deformation induced rotary inertia. (preparing submit to Mechanics of Advanced Materials and Structures)</br>
+				[4] L.T. Yi, Y.L. Ding*, <b>J.L. Hou</b>, Z.X. Yue, H.W. Zhao. Structural health monitoring data cleaning based on Bayesian robust tensor learning. Structural Health Monitoring (under review)</br>
+			</p>
+		</div>
+		
+		
+		<div class="pri" id="four">
+			<h2>获奖</h2>
+			<p>
+				1.	<b>二等研究生奖学金</b>, 东南大学, 2021</br>
+				2.	<b>三好研究生</b>, 东南大学, 2021</br>
+				3.	<b>特等奖</b> of <I>第十二届陕西省大学生数学竞赛</I>, 2019</br>
+				4.	<b>一等优秀学生干部奖学金</b>, 西安建筑科技大学, 2018</br>
+				5.	<b>一等优秀学生奖学金</b>, 西安建筑科技大学, 2017</br>
+				6.	<b>基准方中奖学金</b>, 基准方中 / 西安建筑科技大学, 2017</br>
+			</p>
+		</div>
+		
+		
+		
+		<div class="oth" id="five">
+			<h2>其他</h2>
+			
+			<div class="inter">
+				<h3> 实习 </h3>				
+				<p>
+					<b>东莞环市南路桥梁转体施工监测</b></br>
+					 2022年4月至6月，中铁四局 / 江苏法尔胜光电科技公司，广东省东莞市
+					
+				</p>
+				<img src="img/inter1.PNG" width="800">
+			</div>
+			
+			<div class="elife">
+				<h3> 课外生活 </h3>	
+				<p>
+					我喜欢打乒乓球，初中时获得 <b>国家二级运动员</b> 称号。我有许多爱好，包括健身、哲学、嘻哈音乐等等。
+					
+				</p>
+				<img src="img/1.PNG" width="800">
+
+					
+
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<div class="logo">
+			<img src="img/southeast.PNG" width="100">
+			<h4>Jiale Hou</h4>
+			<p> Welcome to my website! </p>
+		</div>
+		
+		
+		
+
+		
+
+		
+	</body>
+</html>
