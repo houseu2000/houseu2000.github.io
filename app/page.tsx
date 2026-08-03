@@ -81,11 +81,26 @@ function subscribeToLanguage(onChange: () => void) {
 export default function Home() {
   const language = useSyncExternalStore(subscribeToLanguage, getLanguageSnapshot, () => "en");
   const [filter, setFilter] = useState<Filter>("all");
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
     document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
   }, [language]);
+
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileNavOpen(false);
+    };
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [mobileNavOpen]);
 
   const filteredPublications = useMemo(
     () => publications.filter((paper) => filter === "all" || paper.category === filter),
@@ -125,7 +140,12 @@ export default function Home() {
     current: language === "zh" ? "在读" : "Current",
     phone: language === "zh" ? "电话 / 微信" : "Phone / WeChat",
     profile: language === "zh" ? "研究主页" : "Research profile",
+    openNavigation: language === "zh" ? "打开导航" : "Open navigation",
+    closeNavigation: language === "zh" ? "关闭导航" : "Close navigation",
+    mobileNavigation: language === "zh" ? "页面导航" : "Page navigation",
   };
+
+  const closeMobileNav = () => setMobileNavOpen(false);
 
   return (
     <main className="site-shell" id="main-content">
@@ -133,6 +153,9 @@ export default function Home() {
 
       <header className="site-header">
         <div className="container header-inner">
+          <button className="mobile-menu-toggle" type="button" aria-expanded={mobileNavOpen} aria-controls="mobile-navigation" aria-label={mobileNavOpen ? copy.closeNavigation : copy.openNavigation} onClick={() => setMobileNavOpen((open) => !open)}>
+            <span className="mobile-menu-icon" aria-hidden="true"><i /><i /><i /></span>
+          </button>
           <a className="wordmark" href="#top" aria-label="侯佳乐 / Jiale Hou">
             <strong>侯佳乐</strong>
             <span>Jiale Hou</span>
@@ -145,6 +168,22 @@ export default function Home() {
           </button>
         </div>
       </header>
+
+      <div className={`mobile-nav-shell${mobileNavOpen ? " is-open" : ""}`} aria-hidden={!mobileNavOpen}>
+        <button className="mobile-nav-backdrop" type="button" aria-label={copy.closeNavigation} onClick={closeMobileNav} />
+        <aside className="mobile-nav-drawer" id="mobile-navigation" aria-label={copy.mobileNavigation}>
+          <div className="mobile-nav-head">
+            <span>Jiale Hou</span>
+            <button className="mobile-nav-close" type="button" aria-label={copy.closeNavigation} onClick={closeMobileNav}>×</button>
+          </div>
+          <nav className="mobile-nav-links" aria-label={copy.navLabel}>
+            {navItems.map((item, index) => <a href={`#${item.id}`} key={item.id} onClick={closeMobileNav}><b>{String(index + 1).padStart(2, "0")}</b><span>{language === "zh" ? item.zh : item.en}</span></a>)}
+          </nav>
+          <button className="mobile-language-switch" type="button" onClick={toggleLanguage}>
+            <span>{language === "zh" ? "English" : "中文"}</span><b>{language === "zh" ? "EN" : "中文"}</b>
+          </button>
+        </aside>
+      </div>
 
       <aside className="profile-rail" id="top" aria-label={language === "zh" ? "个人信息" : "Profile information"}>
         <div className="profile-rail-inner">
