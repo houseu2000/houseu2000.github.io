@@ -23,6 +23,8 @@ function localizeList(value: LocalizedList, language: Language) {
   return value[language];
 }
 
+const LANGUAGE_STORAGE_KEY = "academic-language-v2";
+
 function ResearchGallery({
   track,
   language,
@@ -60,10 +62,11 @@ function ResearchGallery({
 }
 
 function getLanguageSnapshot(): Language {
-  if (typeof window === "undefined") return "zh";
+  if (typeof window === "undefined") return "en";
   const queryLanguage = new URLSearchParams(window.location.search).get("lang");
-  const savedLanguage = window.localStorage.getItem("academic-language");
-  return queryLanguage === "en" || savedLanguage === "en" ? "en" : "zh";
+  const savedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  if (queryLanguage === "zh" || queryLanguage === "en") return queryLanguage;
+  return savedLanguage === "zh" ? "zh" : "en";
 }
 
 function subscribeToLanguage(onChange: () => void) {
@@ -76,11 +79,11 @@ function subscribeToLanguage(onChange: () => void) {
 }
 
 export default function Home() {
-  const language = useSyncExternalStore(subscribeToLanguage, getLanguageSnapshot, () => "zh");
+  const language = useSyncExternalStore(subscribeToLanguage, getLanguageSnapshot, () => "en");
   const [filter, setFilter] = useState<Filter>("all");
 
   useEffect(() => {
-    window.localStorage.setItem("academic-language", language);
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
     document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
   }, [language]);
 
@@ -91,7 +94,7 @@ export default function Home() {
 
   const toggleLanguage = () => {
     const nextLanguage = language === "zh" ? "en" : "zh";
-    window.localStorage.setItem("academic-language", nextLanguage);
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
     window.history.replaceState({}, "", `${window.location.pathname}?lang=${nextLanguage}`);
     window.dispatchEvent(new Event("academic-language-change"));
   };
@@ -118,6 +121,7 @@ export default function Home() {
     bridge: language === "zh" ? "桥梁监测" : "Bridge SHM",
     source: language === "zh" ? "来源" : "Source",
     citations: language === "zh" ? "被引" : "Cited by",
+    advisors: language === "zh" ? "导师" : "Advisors",
     current: language === "zh" ? "在读" : "Current",
     phone: language === "zh" ? "电话 / 微信" : "Phone / WeChat",
     profile: language === "zh" ? "研究主页" : "Research profile",
@@ -155,7 +159,7 @@ export default function Home() {
           </div>
           <div className="profile-rail-block">
             <span className="profile-rail-label">{language === "zh" ? "导师" : "Advisors"}</span>
-            <p>{language === "zh" ? "张熠教授" : "Prof. Yi Zhang"}</p>
+            <p><a className="profile-rail-inline-link" href="https://civil.seu.edu.cn/zy2/list.htm" target="_blank" rel="noreferrer">{language === "zh" ? "张熠教授" : "Prof. Yi Zhang"}</a></p>
             <p>{language === "zh" ? "顾辰教授" : "Prof. Chen Gu"}</p>
           </div>
           <div className="profile-rail-block profile-rail-contact">
@@ -235,7 +239,7 @@ export default function Home() {
         <div className="container split-section">
           <div className="section-heading compact-heading"><span className="section-number">03</span><div><h2 id="education-title">{copy.educationTitle}</h2></div></div>
           <div className="education-list">
-            {education.map((item) => <article className="education-item" key={item.period}><span>{item.period}</span><div><h3>{localize(item.institution, language)}</h3><p>{localize(item.degree, language)}</p>{item.current && <em>{copy.current}</em>}</div></article>)}
+            {education.map((item) => <article className="education-item" key={item.period}><span>{item.period}</span><div><h3>{localize(item.institution, language)}</h3><p>{localize(item.degree, language)}</p>{item.advisors && <p className="education-advisors"><b>{copy.advisors}</b>{item.advisors.map((advisor) => <a href={advisor.url} target="_blank" rel="noreferrer" key={advisor.url}>{localize(advisor.name, language)}</a>)}</p>}{item.current && <em>{copy.current}</em>}</div></article>)}
           </div>
         </div>
       </section>

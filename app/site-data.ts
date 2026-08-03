@@ -2,6 +2,13 @@ export type Language = "zh" | "en";
 export type Filter = "all" | "vision" | "bridge";
 export type Localized = { zh: string; en: string };
 export type LocalizedList = { zh: string[]; en: string[] };
+export type EducationEntry = {
+  period: string;
+  institution: Localized;
+  degree: Localized;
+  current?: boolean;
+  advisors?: Array<{ name: Localized; url: string }>;
+};
 
 export type Publication = {
   title: string;
@@ -65,9 +72,12 @@ export const researchTracks = [
   },
 ];
 
-export const education = [
+export const education: EducationEntry[] = [
   { period: "2023.09 — 至今 / Present", institution: { zh: "清华大学", en: "Tsinghua University" }, degree: { zh: "博士 · 土木工程（防灾减灾工程）", en: "Ph.D. · Civil Engineering (Disaster Prevention and Mitigation Engineering)" }, current: true },
-  { period: "2020.09 — 2023.06", institution: { zh: "东南大学", en: "Southeast University" }, degree: { zh: "硕士 · 土木水利（结构工程）", en: "M.Eng. · Civil and Hydraulic Engineering (Structural Engineering)" } },
+  { period: "2020.09 — 2023.06", institution: { zh: "东南大学", en: "Southeast University" }, degree: { zh: "硕士 · 土木水利（结构工程）", en: "M.Eng. · Civil and Hydraulic Engineering (Structural Engineering)" }, advisors: [
+    { name: { zh: "万春风教授", en: "Prof. Chunfeng Wan" }, url: "https://civil.seu.edu.cn/wcf/list.htm" },
+    { name: { zh: "丁幼亮教授", en: "Prof. Youliang Ding" }, url: "https://civil.seu.edu.cn/dyl/list.htm#" },
+  ] },
   { period: "2016.09 — 2020.06", institution: { zh: "西安建筑科技大学", en: "Xi'an University of Architecture and Technology" }, degree: { zh: "本科 · 土木工程", en: "B.Eng. · Civil Engineering" } },
 ];
 
