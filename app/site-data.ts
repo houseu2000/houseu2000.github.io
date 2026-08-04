@@ -3,7 +3,7 @@ export type Filter = "all" | "vision" | "bridge";
 export type Localized = { zh: string; en: string };
 export type LocalizedList = { zh: string[]; en: string[] };
 export type EducationEntry = {
-  period: string;
+  period: Localized;
   institution: Localized;
   degree: Localized;
   current?: boolean;
@@ -31,9 +31,9 @@ export const publications: Publication[] = [
   { title: "An anti-occlusion vision-based method for structural motion estimation", authors: "Jiale Hou, Yi Zhang, Xinzheng Lu, et al.", venue: "Mechanical Systems and Signal Processing", year: 2025, category: "vision", url: "https://www.researchgate.net/publication/384725122_An_anti-occlusion_vision-based_method_for_structural_motion_estimation", citationCount: 13 },
   { title: "Domain adaptation based automatic identification method of vortex induced vibration of long-span bridges without prior information", authors: "Chunfeng Wan, Jiale Hou, Guangcai Zhang, et al.", venue: "Engineering Applications of Artificial Intelligence", year: 2025, category: "bridge", url: "https://www.sciencedirect.com/science/article/pii/S0952197624018359", doi: "10.1016/j.engappai.2024.109677", citationCount: 4 },
   { title: "Non-contact vision-based response reconstruction and reinforcement learning guided evolutionary algorithm for substructural condition assessment", authors: "Guangcai Zhang, Jiale Hou, Chunfeng Wan, et al.", venue: "Mechanical Systems and Signal Processing", year: 2024, category: "vision", url: profileUrl, citationCount: 9 },
-  { title: "Estimating structural motions in extreme environmental conditions--A dynamic correlation filter based computer vision approach", authors: "Enjian Cai, Yi Zhang, Xinzheng Lu, et al.", venue: "Mechanical Systems and Signal Processing", year: 2024, category: "vision", url: profileUrl, citationCount: 20 },
-  { title: "A Hybrid Perspective of Vision-Based Methods for Estimating Structural Displacements Based on Mask Region-Based Convolutional Neural Networks", authors: "Chuanchang Xu, Cass Wai Gwan Lai, Yangchun Wang, et al.", venue: "ASCE-ASME Journal of Risk and Uncertainty in Engineering Systems, Part B: Mechanical Engineering", year: 2024, category: "vision", url: profileUrl, citationCount: null },
-  { title: "Vision-based automatic structural motion estimation in presence of 3D camera motion effects", authors: "Enjian Cai, Yi Zhang, Xinzheng Lu, et al.", venue: "Automation in Construction", year: 2024, category: "vision", url: profileUrl, citationCount: 24 },
+  { title: "Estimating structural motions in extreme environmental conditions--A dynamic correlation filter based computer vision approach", authors: "Enjian Cai, Yi Zhang, Xinzheng Lu, Xiaodong Ji, Xiang Gao, Jiale Hou, et al.", venue: "Mechanical Systems and Signal Processing", year: 2024, category: "vision", url: "https://doi.org/10.1016/j.ymssp.2024.111398", doi: "10.1016/j.ymssp.2024.111398", citationCount: 20 },
+  { title: "A Hybrid Perspective of Vision-Based Methods for Estimating Structural Displacements Based on Mask Region-Based Convolutional Neural Networks", authors: "Chuanchang Xu, Cass Wai Gwan Lai, Yangchun Wang, Jiale Hou, et al.", venue: "ASCE-ASME Journal of Risk and Uncertainty in Engineering Systems, Part B: Mechanical Engineering", year: 2024, category: "vision", url: "https://doi.org/10.1115/1.4064844", doi: "10.1115/1.4064844", citationCount: null },
+  { title: "Vision-based automatic structural motion estimation in presence of 3D camera motion effects", authors: "Enjian Cai, Yi Zhang, Xinzheng Lu, Xiaodong Ji, Jiale Hou, et al.", venue: "Automation in Construction", year: 2024, category: "vision", url: "https://doi.org/10.1016/j.autcon.2024.105275", doi: "10.1016/j.autcon.2024.105275", citationCount: 24 },
   { title: "Structural damage identification with output-only strain measurements and swarm intelligence algorithms: a comparative study", authors: "Guangcai Zhang, Jiale Hou, Kun Feng, Chunfeng Wan, et al.", venue: "Measurement Science and Technology", year: 2024, category: "bridge", url: "https://doi.org/10.1088/1361-6501/ad2ad4", doi: "10.1088/1361-6501/ad2ad4", citationCount: 7 },
   { title: "Enhanced data imputation framework for bridge health monitoring using Wasserstein generative adversarial networks with gradient penalty", authors: "Shuai Gao, Chunfeng Wan, Zhenwei Zhou, Jiale Hou, et al.", venue: "Structures", year: 2023, category: "bridge", url: profileUrl, citationCount: 26 },
   { title: "Vortex-Induced Vibration Recognition for Long-Span Bridges Based on Transfer Component Analysis", authors: "Jiale Hou, Sugong Cao, Hao Hu, et al.", venue: "Buildings", year: 2023, category: "bridge", url: "https://www.mdpi.com/2075-5309/13/8/2012", doi: "10.3390/buildings13082012", citationCount: 7 },
@@ -73,12 +73,12 @@ export const researchTracks = [
 ];
 
 export const education: EducationEntry[] = [
-  { period: "2023.09 — 至今 / Present", institution: { zh: "清华大学", en: "Tsinghua University" }, degree: { zh: "博士 · 土木工程（防灾减灾工程）", en: "Ph.D. · Civil Engineering (Disaster Prevention and Mitigation Engineering)" }, current: true },
-  { period: "2020.09 — 2023.06", institution: { zh: "东南大学", en: "Southeast University" }, degree: { zh: "硕士 · 土木水利（结构工程）", en: "M.Eng. · Civil and Hydraulic Engineering (Structural Engineering)" }, advisors: [
+  { period: { zh: "2023.09 — 至今", en: "2023.09 — Present" }, institution: { zh: "清华大学", en: "Tsinghua University" }, degree: { zh: "博士 · 土木工程（防灾减灾工程）", en: "Ph.D. · Civil Engineering (Disaster Prevention and Mitigation Engineering)" }, current: true },
+  { period: { zh: "2020.09 — 2023.06", en: "2020.09 — 2023.06" }, institution: { zh: "东南大学", en: "Southeast University" }, degree: { zh: "硕士 · 土木水利（结构工程）", en: "M.Eng. · Civil and Hydraulic Engineering (Structural Engineering)" }, advisors: [
     { name: { zh: "万春风教授", en: "Prof. Chunfeng Wan" }, url: "https://civil.seu.edu.cn/wcf/list.htm" },
     { name: { zh: "丁幼亮教授", en: "Prof. Youliang Ding" }, url: "https://civil.seu.edu.cn/dyl/list.htm#" },
   ] },
-  { period: "2016.09 — 2020.06", institution: { zh: "西安建筑科技大学", en: "Xi'an University of Architecture and Technology" }, degree: { zh: "本科 · 土木工程", en: "B.Eng. · Civil Engineering" } },
+  { period: { zh: "2016.09 — 2020.06", en: "2016.09 — 2020.06" }, institution: { zh: "西安建筑科技大学", en: "Xi'an University of Architecture and Technology" }, degree: { zh: "本科 · 土木工程", en: "B.Eng. · Civil Engineering" } },
 ];
 
 export const awards = [

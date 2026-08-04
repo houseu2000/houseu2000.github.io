@@ -1,6 +1,6 @@
 # 侯佳乐 / Jiale Hou — Academic Homepage
 
-Personal academic homepage for Jiale Hou, a Ph.D. researcher in civil engineering at Tsinghua University.
+Personal academic homepage for Jiale Hou, a Ph.D. candidate in civil engineering at Tsinghua University.
 
 The site is a single-page bilingual (Chinese / English) research portfolio covering structural health monitoring, computer vision, bridge monitoring, education, publications, and honors.
 

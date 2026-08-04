@@ -78,7 +78,7 @@ button { color: inherit; font: inherit; }
 .content-section { padding: 90px 0; border-bottom: 1px solid var(--line); }
 .paper-section { background: var(--soft-bg); }
 .section-heading { display: grid; grid-template-columns: 62px 1fr; gap: 26px; align-items: start; margin-bottom: 55px; }
-.section-number { padding-top: 9px; }
+.section-number { padding-top: 9px; color: var(--ink); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; }
 .section-heading h2, .contact-section h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(42px, 5.4vw, 68px); font-weight: 400; letter-spacing: -0.08em; line-height: 0.98; }
 .section-heading p { max-width: 480px; margin: 16px 0 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
 .section-heading p a { white-space: nowrap; }
@@ -99,7 +99,7 @@ button { color: inherit; font: inherit; }
 .research-figure-image { display: block; overflow: hidden; border: 1px solid var(--line); background: var(--white); }
 .research-figure-image img { display: block; width: 100%; aspect-ratio: 2.2 / 1; max-height: 360px; object-fit: contain; transition: transform 180ms ease; }
 .research-figure-image:hover img { transform: scale(1.015); }
-.research-figure figcaption { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; padding-top: 12px; }
+.research-figure figcaption { display: grid; grid-template-columns: 48px 1fr; gap: 10px; align-items: start; padding-top: 12px; }
 .research-figure figcaption > span { color: var(--accent); font-size: 11px; letter-spacing: 0.1em; }
 .research-figure-meta { min-width: 0; }
 .research-figure figcaption p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
@@ -115,10 +115,13 @@ button { color: inherit; font: inherit; }
 .filter-row button { padding: 7px 0; margin-right: 16px; border: 0; border-bottom: 1px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; }
 .filter-row button:hover, .filter-row button:focus-visible, .filter-row button.selected { border-bottom-color: var(--accent); color: var(--accent); }
 .filter-row > span { margin-left: auto; color: var(--muted); font-size: 12px; }
-.publication-item { display: grid; grid-template-columns: 62px minmax(0, 1fr) 220px 40px; gap: 26px; align-items: start; padding: 23px 0; border-bottom: 1px solid var(--line); }
+.publication-item { display: grid; grid-template-columns: 62px minmax(0, 1fr) 82px 220px 40px; gap: 26px; align-items: start; padding: 23px 0; border-bottom: 1px solid var(--line); }
 .publication-item h3 { margin: 0; font-size: 15px; font-weight: 400; line-height: 1.5; }
 .publication-item p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
-.publication-citation { display: block; margin-top: 8px; color: var(--accent); font-size: 12px; line-height: 1.4; letter-spacing: 0.03em; }
+.publication-main { min-width: 0; }
+.publication-main p strong { color: var(--ink); font-weight: 700; }
+.publication-citation { display: flex; flex-direction: column; gap: 4px; margin: 0; color: var(--accent); font-size: 11px; line-height: 1.3; letter-spacing: 0.03em; }
+.publication-citation strong { color: var(--ink); font-size: 14px; font-weight: 400; }
 .publication-venue { color: var(--muted); font-size: 13px; line-height: 1.5; }
 .publication-item > a { color: var(--accent); font-size: 12px; text-align: right; }
 
@@ -193,9 +196,9 @@ button { color: inherit; font: inherit; }
   .hero-grid { min-height: 0; padding-top: 100px; padding-bottom: 82px; }
   .hero-aside { max-width: 520px; }
   .section-heading { margin-bottom: 40px; }
-  .publication-item { grid-template-columns: 52px minmax(0, 1fr) 36px; gap: 15px; }
+  .publication-item { grid-template-columns: 52px minmax(0, 1fr) 78px 36px; gap: 15px; }
   .publication-venue { display: none; }
-  .publication-item > a { grid-column: 3; grid-row: 1; }
+  .publication-item > a { grid-column: 4; grid-row: 1; }
   .split-section { gap: 42px; }
 }
 
@@ -227,7 +230,7 @@ button { color: inherit; font: inherit; }
   .gallery-arrow-next { right: -19px; }
   .filter-row { margin-left: 50px; flex-wrap: wrap; }
   .filter-row > span { margin-left: 0; width: 100%; }
-  .publication-item { grid-template-columns: 39px 1fr 23px; gap: 9px; }
+  .publication-item { grid-template-columns: 39px minmax(0, 1fr) 62px 23px; gap: 9px; }
   .publication-item h3 { font-size: 14px; }
   .education-item { grid-template-columns: 1fr; gap: 8px; }
   .education-item > span { font-size: 10px; }

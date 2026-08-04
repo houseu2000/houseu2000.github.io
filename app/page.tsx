@@ -23,6 +23,15 @@ function localizeList(value: LocalizedList, language: Language) {
   return value[language];
 }
 
+function renderAuthors(authors: string) {
+  return authors.split(/(Jiale Hou|侯佳乐)/g).map((part, index) => {
+    if (part === "Jiale Hou" || part === "侯佳乐") {
+      return <strong key={`${part}-${index}`}>{part}</strong>;
+    }
+    return part;
+  });
+}
+
 const LANGUAGE_STORAGE_KEY = "academic-language-v2";
 
 function ResearchGallery({
@@ -52,7 +61,7 @@ function ResearchGallery({
             <a className="research-figure-image" href={figure.url} target="_blank" rel="noreferrer" aria-label={`${figureSource}: ${figure.paper}`}>
               <img src={figure.src} alt={localize(figure.alt, language)} loading={index > 1 ? "lazy" : undefined} />
             </a>
-            <figcaption><span>0{index + 1}</span><div className="research-figure-meta"><p><b>{figureLabel}</b> · {localize(figure.caption, language)}</p><small>{figure.paper}</small><a href={figure.url} target="_blank" rel="noreferrer">{figureSource} ↗</a></div></figcaption>
+            <figcaption><span>{language === "zh" ? `图 ${String(index + 1).padStart(2, "0")}` : `Fig. ${String(index + 1).padStart(2, "0")}`}</span><div className="research-figure-meta"><p><b>{figureLabel}</b> · {localize(figure.caption, language)}</p><small>{figure.paper}</small><a href={figure.url} target="_blank" rel="noreferrer">{figureSource} ↗</a></div></figcaption>
           </figure>)}
         </div>
       </div>
@@ -114,7 +123,7 @@ export default function Home() {
   const copy = {
     navLabel: language === "zh" ? "主导航" : "Primary navigation",
     institution: language === "zh" ? "清华大学 · 土木工程" : "Tsinghua University · Civil Engineering",
-    role: language === "zh" ? "博士研究生 / 防灾减灾工程" : "Ph.D. researcher / Disaster mitigation",
+    role: language === "zh" ? "博士研究生 / 防灾减灾工程" : "Ph.D. candidate / Disaster mitigation",
     intro: language === "zh" ? "关注结构健康监测、计算机视觉与土木基础设施的智能感知。" : "Working on structural health monitoring, computer vision, and intelligent sensing for civil infrastructure.",
     scholar: "Google Scholar",
     email: language === "zh" ? "发送邮件" : "Email",
@@ -191,7 +200,7 @@ export default function Home() {
           <div className="profile-rail-block">
             <span className="profile-rail-label">{language === "zh" ? "身份" : "Position"}</span>
             <p>{language === "zh" ? "清华大学 · 土木工程" : "Tsinghua University · Civil Engineering"}</p>
-            <p>{language === "zh" ? "博士研究生 · 防灾减灾工程" : "Ph.D. researcher · Disaster mitigation"}</p>
+            <p>{language === "zh" ? "博士研究生 · 防灾减灾工程" : "Ph.D. candidate · Disaster mitigation"}</p>
           </div>
           <div className="profile-rail-block">
             <span className="profile-rail-label">{language === "zh" ? "导师" : "Advisors"}</span>
@@ -206,8 +215,8 @@ export default function Home() {
           </div>
           <div className="profile-rail-block profile-rail-research">
             <span className="profile-rail-label">{language === "zh" ? "研究方向" : "Research"}</span>
-            <a href="#research"><b>01</b>{language === "zh" ? "灾后结构视觉感知与非接触响应测量" : "Vision-based structural sensing"}</a>
-            <a href="#research"><b>02</b>{language === "zh" ? "桥梁结构健康监测与数据驱动状态识别" : "Data-driven bridge monitoring"}</a>
+            <a href="#research"><b>R.01</b>{language === "zh" ? "灾后结构视觉感知与非接触响应测量" : "Vision-based structural sensing"}</a>
+            <a href="#research"><b>R.02</b>{language === "zh" ? "桥梁结构健康监测与数据驱动状态识别" : "Data-driven bridge monitoring"}</a>
           </div>
         </div>
       </aside>
@@ -227,8 +236,8 @@ export default function Home() {
           </div>
           <aside className="hero-aside" aria-label={language === "zh" ? "研究关键词" : "Research keywords"}>
             <p className="aside-label">Research interests</p>
-            <div className="aside-item"><span>01</span><p>{language === "zh" ? "灾后结构视觉感知与非接触响应测量" : "Vision-based structural sensing and post-disaster assessment"}</p></div>
-            <div className="aside-item"><span>02</span><p>{language === "zh" ? "桥梁结构健康监测与数据驱动状态识别" : "Data-driven bridge structural health monitoring"}</p></div>
+            <div className="aside-item"><span>R.01</span><p>{language === "zh" ? "灾后结构视觉感知与非接触响应测量" : "Vision-based structural sensing and post-disaster assessment"}</p></div>
+            <div className="aside-item"><span>R.02</span><p>{language === "zh" ? "桥梁结构健康监测与数据驱动状态识别" : "Data-driven bridge structural health monitoring"}</p></div>
           </aside>
         </div>
       </section>
@@ -238,7 +247,7 @@ export default function Home() {
           <div className="section-heading"><span className="section-number">01</span><div><h2 id="research-title">{copy.researchTitle}</h2><p>{copy.researchIntro}</p></div></div>
           <div className="research-list">
             {researchTracks.map((track) => <article className="research-item" key={track.number}>
-              <span className="item-number">{track.number}</span>
+              <span className="item-number">01.{track.number}</span>
               <div className="research-item-body">
                 <h3>{localize(track.title, language)}</h3>
                 <p>{localize(track.description, language)}</p>
@@ -263,7 +272,8 @@ export default function Home() {
           <div className="publication-list">
             {filteredPublications.map((paper) => <article className="publication-item" key={paper.title}>
               <span className="publication-year">{paper.year}</span>
-              <div><h3>{paper.title}</h3><p>{paper.authors}</p><span className="publication-citation">{copy.citations} {paper.citationCount ?? "—"}</span></div>
+              <div className="publication-main"><h3>{paper.title}</h3><p>{renderAuthors(paper.authors)}</p></div>
+              <div className="publication-citation"><span>{copy.citations}</span><strong>{paper.citationCount ?? "—"}</strong></div>
               <span className="publication-venue">{paper.venue}</span>
               <a href={paper.url} target="_blank" rel="noreferrer" aria-label={`${copy.source}: ${paper.title}`}>{paper.doi ? "DOI" : "↗"}</a>
             </article>)}
@@ -275,7 +285,7 @@ export default function Home() {
         <div className="container split-section">
           <div className="section-heading compact-heading"><span className="section-number">03</span><div><h2 id="education-title">{copy.educationTitle}</h2></div></div>
           <div className="education-list">
-            {education.map((item) => <article className="education-item" key={item.period}><span>{item.period}</span><div><h3>{localize(item.institution, language)}</h3><p>{localize(item.degree, language)}</p>{item.advisors && <p className="education-advisors"><b>{copy.advisors}</b>{item.advisors.map((advisor) => <a href={advisor.url} target="_blank" rel="noreferrer" key={advisor.url}>{localize(advisor.name, language)}</a>)}</p>}{item.current && <em>{copy.current}</em>}</div></article>)}
+            {education.map((item) => <article className="education-item" key={item.period.en}><span>{localize(item.period, language)}</span><div><h3>{localize(item.institution, language)}</h3><p>{localize(item.degree, language)}</p>{item.advisors && <p className="education-advisors"><b>{copy.advisors}</b>{item.advisors.map((advisor) => <a href={advisor.url} target="_blank" rel="noreferrer" key={advisor.url}>{localize(advisor.name, language)}</a>)}</p>}{item.current && <em>{copy.current}</em>}</div></article>)}
           </div>
         </div>
       </section>
@@ -284,7 +294,7 @@ export default function Home() {
         <div className="container">
           <div className="section-heading"><span className="section-number">04</span><div><h2 id="honors-title">{copy.honorsTitle}</h2></div></div>
           <div className="honors-list">
-            {awards.map((award, index) => <article className="honor-item" key={`${award.year}-${award.zh}`}><span>{award.year}</span><strong>{String(index + 1).padStart(2, "0")}</strong><div><h3>{language === "zh" ? award.zh : award.en}</h3><p>{language === "zh" ? award.orgZh : award.orgEn}</p></div></article>)}
+            {awards.map((award, index) => <article className="honor-item" key={`${award.year}-${award.zh}`}><span>{award.year}</span><strong>04.{String(index + 1).padStart(2, "0")}</strong><div><h3>{language === "zh" ? award.zh : award.en}</h3><p>{language === "zh" ? award.orgZh : award.orgEn}</p></div></article>)}
           </div>
         </div>
       </section>

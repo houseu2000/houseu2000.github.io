@@ -5,11 +5,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://houseu2000.github.io"),
   title: "侯佳乐 | Jiale Hou — Academic Homepage",
   description:
-    "Academic homepage of Jiale Hou, Ph.D. researcher in civil engineering at Tsinghua University, focusing on structural health monitoring, computer vision, and disaster mitigation.",
+    "Academic homepage of Jiale Hou, Ph.D. candidate in civil engineering at Tsinghua University, focusing on structural health monitoring, computer vision, and disaster mitigation.",
   openGraph: {
     title: "侯佳乐 | Jiale Hou — Academic Homepage",
     description:
-      "Civil engineering researcher at Tsinghua University working on vision-based structural sensing and bridge structural health monitoring.",
+      "Civil engineering Ph.D. candidate at Tsinghua University working on vision-based structural sensing and bridge structural health monitoring.",
     url: "https://houseu2000.github.io",
     siteName: "Jiale Hou / 侯佳乐",
     type: "website",
