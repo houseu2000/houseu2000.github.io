@@ -272,7 +272,7 @@ export default function Home() {
           <div className="publication-list">
             {filteredPublications.map((paper) => <article className="publication-item" key={paper.title}>
               <span className="publication-year">{paper.year}</span>
-              <div className="publication-main"><h3>{paper.title}</h3><p>{renderAuthors(paper.authors)}</p></div>
+              <div className="publication-main"><h3>{paper.title}</h3><p>{renderAuthors(paper.authors)}{paper.authorNote && <span className="publication-author-note"> · {localize(paper.authorNote, language)}</span>}</p></div>
               <div className="publication-citation"><span>{copy.citations}</span><strong>{paper.citationCount ?? "—"}</strong></div>
               <span className="publication-venue">{paper.venue}</span>
               <a href={paper.url} target="_blank" rel="noreferrer" aria-label={`${copy.source}: ${paper.title}`}>{paper.doi ? "DOI" : "↗"}</a>
