@@ -237,6 +237,8 @@ html:lang(en) .about-copy p { text-align: justify; text-justify: inter-word; }
   .about-copy p { font-size: 16px; line-height: 1.85; }
   .about-links { margin-top: 24px; }
   .section-heading { grid-template-columns: 38px 1fr; gap: 12px; }
+  .honors-section .section-heading { grid-template-columns: 1fr; }
+  .honors-section .section-heading > .section-number, .honors-section .honor-item > strong { display: none; }
   .section-heading h2, .contact-section h2 { font-size: 48px; }
   .research-item { grid-template-columns: 35px 1fr; gap: 12px; padding: 27px 0 36px; }
   .research-item h3 { font-size: 25px; }
@@ -254,7 +256,7 @@ html:lang(en) .about-copy p { text-align: justify; text-justify: inter-word; }
   .publication-item h3 { font-size: 14px; }
   .education-item { grid-template-columns: 1fr; gap: 8px; }
   .education-item > span { font-size: 10px; }
-  .honor-item { grid-template-columns: 77px 25px 1fr; gap: 10px; }
+  .honor-item { grid-template-columns: 77px minmax(0, 1fr); gap: 10px; }
   .honor-item h3 { font-size: 14px; }
   .contact-list a { grid-template-columns: 1fr 20px; gap: 7px; }
   .contact-list span, .contact-list strong { grid-column: 1; }
