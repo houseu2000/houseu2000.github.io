@@ -130,7 +130,17 @@ export default function Home() {
     navLabel: language === "zh" ? "主导航" : "Primary navigation",
     institution: language === "zh" ? "清华大学 · 土木工程" : "Tsinghua University · Civil Engineering",
     role: language === "zh" ? "博士研究生 / 防灾减灾工程" : "Ph.D. candidate / Disaster mitigation",
-    intro: language === "zh" ? "关注结构健康监测、计算机视觉与土木基础设施的智能感知。" : "Working on structural health monitoring, computer vision, and intelligent sensing for civil infrastructure.",
+    intro: language === "zh" ? "主要从事城市受灾感知研究，博士研究聚焦于利用城市监控视频进行结构响应识别和受灾信息提取。" : "My research focuses on urban disaster sensing, with an emphasis on identifying structural responses and extracting disaster-related information from urban surveillance video.",
+    aboutTitle: language === "zh" ? "关于我" : "About",
+    aboutIntro: language === "zh"
+      ? [
+          "我是清华大学土木工程系的博士研究生，即将于2027年6月毕业，主要从事城市受灾感知研究。硕士阶段，我主要开展桥梁监测数据分析；目前的博士研究聚焦于利用城市监控视频进行结构响应识别和受灾信息提取，为快速灾情评估提供非接触式技术支持。",
+          "目前，我重点关注计算机视觉及智能体架构。我的长期目标是推动城市防灾减灾、基础设施监测与人工智能的融合，发展可靠、可解释且具有工程实用性的智能方法。",
+        ]
+      : [
+          "I am a Ph.D. candidate in the Department of Civil Engineering at Tsinghua University and expect to graduate in June 2027. My research focuses on urban disaster sensing. During my master’s study, I worked on bridge monitoring-data analytics; my doctoral research focuses on identifying structural responses and extracting disaster-related information from urban surveillance video, providing non-contact technical support for rapid disaster assessment.",
+          "My current interests center on computer vision and agent architectures. My long-term goal is to integrate urban disaster prevention and mitigation, infrastructure monitoring, and artificial intelligence, and to develop reliable, interpretable, and practically useful intelligent methods.",
+        ],
     scholar: "Google Scholar",
     email: language === "zh" ? "发送邮件" : "Email",
     researchTitle: language === "zh" ? "研究方向" : "Research",
@@ -193,15 +203,16 @@ export default function Home() {
       <div className={`mobile-nav-shell${mobileNavOpen ? " is-open" : ""}`} aria-hidden={!mobileNavOpen}>
         <button className="mobile-nav-backdrop" type="button" aria-label={copy.closeNavigation} onClick={closeMobileNav} />
         <aside className="mobile-nav-drawer" id="mobile-navigation" aria-label={copy.mobileNavigation}>
-          <div className="mobile-nav-head">
-            <span>Jiale Hou</span>
-            <button className="mobile-nav-close" type="button" aria-label={copy.closeNavigation} onClick={closeMobileNav}>×</button>
-          </div>
+          <button className="mobile-nav-close" type="button" aria-label={copy.closeNavigation} onClick={closeMobileNav}>×</button>
           <nav className="mobile-nav-links" aria-label={copy.navLabel}>
             {navItems.map((item, index) => <a href={`#${item.id}`} key={item.id} onClick={(event) => handleMobileNavigation(event, item.id)}><b>{String(index + 1).padStart(2, "0")}</b><span>{language === "zh" ? item.zh : item.en}</span></a>)}
           </nav>
           <button className="mobile-language-switch" type="button" onClick={toggleLanguage}>
-            <span>{language === "zh" ? "English" : "中文"}</span><b>{language === "zh" ? "EN" : "中文"}</b>
+            <span className="mobile-language-label">
+              <svg className="mobile-language-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><path d="M3.8 12h16.4M12 3.5c2.2 2.3 3.4 5.1 3.4 8.5S14.2 18.2 12 20.5C9.8 18.2 8.6 15.4 8.6 12S9.8 5.8 12 3.5Z" /></svg>
+              <span>{language === "zh" ? "语言" : "Language"}</span>
+            </span>
+            <b>{language === "zh" ? "EN" : "中文"}</b>
           </button>
         </aside>
       </div>
@@ -212,6 +223,7 @@ export default function Home() {
             <strong>侯佳乐</strong>
             <span>Jiale Hou</span>
           </a>
+          <img className="profile-rail-photo" src="/profile.jpg" alt={language === "zh" ? "侯佳乐个人照片" : "Portrait of Jiale Hou"} />
           <div className="profile-rail-block">
             <span className="profile-rail-label">{language === "zh" ? "身份" : "Position"}</span>
             <p>{language === "zh" ? "清华大学 · 土木工程" : "Tsinghua University · Civil Engineering"}</p>
@@ -254,6 +266,19 @@ export default function Home() {
             <div className="aside-item"><span>R.01</span><p>{language === "zh" ? "灾后结构视觉感知与非接触响应测量" : "Vision-based structural sensing and post-disaster assessment"}</p></div>
             <div className="aside-item"><span>R.02</span><p>{language === "zh" ? "桥梁结构健康监测与数据驱动状态识别" : "Data-driven bridge structural health monitoring"}</p></div>
           </aside>
+        </div>
+      </section>
+
+      <section className="content-section about-section" id="about" aria-labelledby="about-title">
+        <div className="container about-grid">
+          <div className="section-heading compact-heading"><span className="section-number">00</span><div><h2 id="about-title">{copy.aboutTitle}</h2></div></div>
+          <div className="about-copy">
+            {copy.aboutIntro.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            <div className="about-links">
+              <a href={scholarUrl} target="_blank" rel="noreferrer">{copy.scholar} <span>↗</span></a>
+              <a href="mailto:hjl23@mails.tsinghua.edu.cn">{copy.email} <span>↗</span></a>
+            </div>
+          </div>
         </div>
       </section>
 
