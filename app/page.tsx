@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { type MouseEvent, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import {
   awards,
   education,
@@ -108,6 +108,12 @@ export default function Home() {
     };
   }, [mobileNavOpen]);
 
+  useEffect(() => {
+    if (mobileNavOpen) return;
+    document.documentElement.style.removeProperty("overflow");
+    document.body.style.removeProperty("overflow");
+  }, [mobileNavOpen]);
+
   const filteredPublications = useMemo(
     () => publications.filter((paper) => filter === "all" || paper.category === filter),
     [filter],
@@ -153,6 +159,15 @@ export default function Home() {
 
   const closeMobileNav = () => setMobileNavOpen(false);
 
+  const handleMobileNavigation = (event: MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    event.preventDefault();
+    setMobileNavOpen(false);
+    window.history.pushState({}, "", `#${targetId}`);
+    window.requestAnimationFrame(() => {
+      document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
   return (
     <main className="site-shell" id="main-content">
       <a className="skip-link" href="#main-content">{language === "zh" ? "跳转到主要内容" : "Skip to main content"}</a>
@@ -183,7 +198,7 @@ export default function Home() {
             <button className="mobile-nav-close" type="button" aria-label={copy.closeNavigation} onClick={closeMobileNav}>×</button>
           </div>
           <nav className="mobile-nav-links" aria-label={copy.navLabel}>
-            {navItems.map((item, index) => <a href={`#${item.id}`} key={item.id} onClick={closeMobileNav}><b>{String(index + 1).padStart(2, "0")}</b><span>{language === "zh" ? item.zh : item.en}</span></a>)}
+            {navItems.map((item, index) => <a href={`#${item.id}`} key={item.id} onClick={(event) => handleMobileNavigation(event, item.id)}><b>{String(index + 1).padStart(2, "0")}</b><span>{language === "zh" ? item.zh : item.en}</span></a>)}
           </nav>
           <button className="mobile-language-switch" type="button" onClick={toggleLanguage}>
             <span>{language === "zh" ? "English" : "中文"}</span><b>{language === "zh" ? "EN" : "中文"}</b>
