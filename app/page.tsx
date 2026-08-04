@@ -90,14 +90,11 @@ export default function Home() {
 
   useEffect(() => {
     if (!mobileNavOpen) return;
-    const previousOverflow = document.body.style.overflow;
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMobileNavOpen(false);
     };
-    document.body.style.overflow = "hidden";
     document.addEventListener("keydown", closeOnEscape);
     return () => {
-      document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, [mobileNavOpen]);
