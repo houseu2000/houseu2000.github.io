@@ -86,7 +86,6 @@ export const awards = [
   { year: "2025", zh: "综合一等奖学金", en: "Comprehensive First-Class Scholarship", orgZh: "清华大学", orgEn: "Tsinghua University" },
   { year: "2024", zh: "综合一等奖学金", en: "Comprehensive First-Class Scholarship", orgZh: "清华大学土木系", orgEn: "Department of Civil Engineering, Tsinghua University" },
   { year: "2024", zh: "论文特等奖", en: "Special Prize for Outstanding Paper", orgZh: "第33届全国结构工程会议", orgEn: "The 33rd National Conference on Structural Engineering" },
-  { year: "2024", zh: "系研团优秀干部", en: "Outstanding Student Association Cadre", orgZh: "清华大学土木系", orgEn: "Department of Civil Engineering, Tsinghua University" },
   { year: "2024", zh: "Best Presentation Award", en: "Best Presentation Award", orgZh: "亚太区-欧洲智能结构技术暑期学校（日本京都）", orgEn: "Asia-Pacific–Europe Smart Structures Summer School, Kyoto, Japan" },
   { year: "2023", zh: "江苏省土木工程学科优秀毕业生", en: "Outstanding Graduate in Civil Engineering", orgZh: "江苏省土木建筑学会", orgEn: "Jiangsu Civil and Architectural Society" },
   { year: "2021–2023", zh: "三好研究生、三好研究生标兵、优秀毕业研究生", en: "Merit Student, Model Merit Student, and Outstanding Graduate Student", orgZh: "东南大学", orgEn: "Southeast University" },
