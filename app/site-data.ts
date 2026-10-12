@@ -43,6 +43,7 @@ export const publications: Publication[] = [
   { title: "Structural health monitoring data cleaning based on Bayesian robust tensor learning", authors: "Letian Yi, Youliang Ding, Jiale Hou, et al.", venue: "Structural Health Monitoring", year: 2022, category: "bridge", url: profileUrl, citationCount: 15 },
   { title: "Automatic identification of vortex induced vibration of long-span bridges using kernel mean matching method", authors: "Jiale Hou, Xiaobing Xiong, Ensheng Ge, et al.", venue: "Conference paper", year: 2022, category: "bridge", url: profileUrl, citationCount: null },
   { title: "Deep learning and data augmentation based data imputation for structural health monitoring system in multi-sensor damaged state", authors: "Jiale Hou, Huachen Jiang, Chunfeng Wan, et al.", venue: "Measurement", year: 2022, category: "bridge", url: "https://www.sciencedirect.com/science/article/pii/S0263224122004584", doi: "10.1016/j.measurement.2022.111206", citationCount: 80 },
+  { title: "Depth vision-based indoor building behavior reconstruction in disaster scenarios: Integrating structural displacement and non-structural motion", authors: "Jiale Hou, Yi Zhang, Chen Gu, Tong Guo, Enjian Cai, Pengfei Ma", venue: "Journal of Building Engineering", year: 2026, category: "vision", url: "https://doi.org/10.1016/j.jobe.2026.117474", doi: "10.1016/j.jobe.2026.117474" },
 ];
 
 export const researchTracks = [

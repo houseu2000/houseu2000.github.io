@@ -1,356 +1,423 @@
 "use client";
-
-import { type MouseEvent, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+/* eslint-disable @next/next/no-img-element -- Native images work without an image optimization server on GitHub Pages. */
+import { useEffect, useState, type MouseEvent, type ReactNode } from "react";
 import {
-  awards,
-  education,
-  navItems,
-  profileUrl,
   publications,
-  researchTracks,
   scholarUrl,
-  type Filter,
+  profileUrl,
   type Language,
-  type Localized,
-  type LocalizedList,
 } from "./site-data";
-
-function localize(value: Localized, language: Language) {
-  return value[language];
-}
-
-function localizeList(value: LocalizedList, language: Language) {
-  return value[language];
-}
-
-function renderAuthors(authors: string) {
-  return authors.split(/(Jiale Hou|侯佳乐)/g).map((part, index) => {
-    if (part === "Jiale Hou" || part === "侯佳乐") {
-      return <strong key={`${part}-${index}`}>{part}</strong>;
-    }
-    return part;
-  });
-}
-
-const LANGUAGE_STORAGE_KEY = "academic-language-v2";
-
-function ResearchGallery({
-  track,
+import { researchProjects } from "./research-data";
+import {
+  activities,
+  experiences,
+  introduction,
+  publicationSummary,
+  resumeEducation,
+  resumeHonors,
+  resumeSections,
+} from "./resume-data";
+import {
+  BulletList,
+  LanguageSwitch,
+  RichText,
+  useLanguage,
+} from "./resume-components";
+const selectedPapers = [publications[16], publications[1], publications[2]];
+function Section({
+  id,
   language,
-  figureLabel,
-  figureSource,
+  children,
+  extra,
 }: {
-  track: (typeof researchTracks)[number];
+  id: string;
   language: Language;
-  figureLabel: string;
-  figureSource: string;
+  children: ReactNode;
+  extra?: ReactNode;
 }) {
-  const galleryRef = useRef<HTMLDivElement>(null);
-  const scrollGallery = (direction: number) => {
-    const gallery = galleryRef.current;
-    if (!gallery) return;
-    gallery.scrollBy({ left: direction * (gallery.clientWidth + 24), behavior: "smooth" });
-  };
-
+  const section = resumeSections.find((item) => item.id === id)!;
   return (
-    <div className="research-gallery-wrap">
-      <button className="gallery-arrow gallery-arrow-prev" type="button" onClick={() => scrollGallery(-1)} aria-label={language === "zh" ? "上一张论文图" : "View previous paper figure"}>←</button>
-      <div className="research-gallery" ref={galleryRef} role="region" tabIndex={0} aria-label={language === "zh" ? `${localize(track.title, language)}论文图示，可横向滚动` : `${localize(track.title, language)} paper figures, horizontally scrollable`}>
-        <div className="research-gallery-track">
-          {track.figures.map((figure, index) => <figure className="research-figure" key={figure.src}>
-            <a className="research-figure-image" href={figure.url} target="_blank" rel="noreferrer" aria-label={`${figureSource}: ${figure.paper}`}>
-              <img src={figure.src} alt={localize(figure.alt, language)} loading={index > 1 ? "lazy" : undefined} />
-            </a>
-            <figcaption><span>{language === "zh" ? `图 ${String(index + 1).padStart(2, "0")}` : `Fig. ${String(index + 1).padStart(2, "0")}`}</span><div className="research-figure-meta"><p><b>{figureLabel}</b> · {localize(figure.caption, language)}</p><small>{figure.paper}</small><a href={figure.url} target="_blank" rel="noreferrer">{figureSource} ↗</a></div></figcaption>
-          </figure>)}
+    <section className="resume-section" id={id} aria-labelledby={`${id}-title`}>
+      <div className="section-heading">
+        <div>
+          <span className="eyebrow">{section.en}</span>
+          <h2 id={`${id}-title`}>{section[language]}</h2>
         </div>
+        {extra}
       </div>
-      <button className="gallery-arrow gallery-arrow-next" type="button" onClick={() => scrollGallery(1)} aria-label={language === "zh" ? "下一张论文图" : "View next paper figure"}>→</button>
-    </div>
+      {children}
+    </section>
   );
 }
-
-function getLanguageSnapshot(): Language {
-  if (typeof window === "undefined") return "en";
-  const queryLanguage = new URLSearchParams(window.location.search).get("lang");
-  const savedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  if (queryLanguage === "zh" || queryLanguage === "en") return queryLanguage;
-  return savedLanguage === "zh" ? "zh" : "en";
-}
-
-function subscribeToLanguage(onChange: () => void) {
-  window.addEventListener("storage", onChange);
-  window.addEventListener("academic-language-change", onChange);
-  return () => {
-    window.removeEventListener("storage", onChange);
-    window.removeEventListener("academic-language-change", onChange);
-  };
-}
-
 export default function Home() {
-  const language = useSyncExternalStore(subscribeToLanguage, getLanguageSnapshot, () => "en");
-  const [filter, setFilter] = useState<Filter>("all");
+  const { language, toggleLanguage } = useLanguage();
+  const zh = language === "zh";
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-
-  useEffect(() => {
-    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
-    document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
-  }, [language]);
-
   useEffect(() => {
     if (!mobileNavOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
+    const close = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMobileNavOpen(false);
     };
-    document.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.removeEventListener("keydown", closeOnEscape);
-    };
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
   }, [mobileNavOpen]);
-
-  useEffect(() => {
-    if (mobileNavOpen) return;
-    document.documentElement.style.removeProperty("overflow");
-    document.body.style.removeProperty("overflow");
-  }, [mobileNavOpen]);
-
-  const filteredPublications = useMemo(
-    () => publications.filter((paper) => filter === "all" || paper.category === filter),
-    [filter],
-  );
-
-  const toggleLanguage = () => {
-    const nextLanguage = language === "zh" ? "en" : "zh";
-    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
-    window.history.replaceState({}, "", `${window.location.pathname}?lang=${nextLanguage}`);
-    window.dispatchEvent(new Event("academic-language-change"));
-  };
-
-  const copy = {
-    navLabel: language === "zh" ? "主导航" : "Primary navigation",
-    institution: language === "zh" ? "清华大学 · 土木工程" : "Tsinghua University · Civil Engineering",
-    role: language === "zh" ? "博士研究生 / 防灾减灾工程" : "Ph.D. candidate / Disaster mitigation",
-    intro: language === "zh" ? "主要从事城市受灾感知研究，博士研究聚焦于利用城市监控视频进行结构响应识别和受灾信息提取。" : "My research focuses on urban disaster sensing, with an emphasis on identifying structural responses and extracting disaster-related information from urban surveillance video.",
-    aboutTitle: language === "zh" ? "关于我" : "About",
-    aboutIntro: language === "zh"
-      ? [
-          "我是清华大学土木工程系的博士研究生，即将于2027年6月毕业，主要从事城市受灾感知研究。硕士阶段，我主要开展桥梁监测数据分析；目前的博士研究聚焦于利用城市监控视频进行结构响应识别和受灾信息提取，为快速灾情评估提供非接触式技术支持。",
-          "目前，我重点关注计算机视觉及智能体架构。我的长期目标是推动城市防灾减灾、基础设施监测与人工智能的融合，发展可靠、可解释且具有工程实用性的智能方法。",
-        ]
-      : [
-          "I am a Ph.D. candidate in the Department of Civil Engineering at Tsinghua University and expect to graduate in June 2027. My research focuses on urban disaster sensing. During my master’s study, I worked on bridge monitoring-data analytics; my doctoral research focuses on identifying structural responses and extracting disaster-related information from urban surveillance video, providing non-contact technical support for rapid disaster assessment.",
-          "My current interests center on computer vision and agent architectures. My long-term goal is to integrate urban disaster prevention and mitigation, infrastructure monitoring, and artificial intelligence, and to develop reliable, interpretable, and practically useful intelligent methods.",
-        ],
-    scholar: "Google Scholar",
-    email: language === "zh" ? "发送邮件" : "Email",
-    researchTitle: language === "zh" ? "研究方向" : "Research",
-    researchIntro: language === "zh" ? "围绕视觉结构感知与桥梁监测数据分析展开研究。" : "Research at the intersection of vision-based structural sensing and bridge monitoring data.",
-    figureLabel: language === "zh" ? "论文图示" : "Paper figure",
-    figureSource: language === "zh" ? "查看论文" : "View paper",
-    publicationsTitle: language === "zh" ? "论文发表" : "Publications",
-    publicationsIntro: language === "zh" ? "论文题目保留正式发表语言；被引量为 OpenAlex 公开索引值，Google Scholar 提供完整作者档案。" : "Titles are preserved in their original language. Citation counts are from the public OpenAlex index; Google Scholar provides the full author profile.",
-    educationTitle: language === "zh" ? "教育经历" : "Education",
-    honorsTitle: language === "zh" ? "荣誉奖励" : "Honors",
-    contactTitle: language === "zh" ? "联系我" : "Contact",
-    contactIntro: language === "zh" ? "欢迎就结构健康监测、视觉测量及相关研究交流。" : "I welcome conversations about structural health monitoring, vision-based measurement, and related research.",
-    all: language === "zh" ? "全部" : "All",
-    vision: language === "zh" ? "视觉感知" : "Vision",
-    bridge: language === "zh" ? "桥梁监测" : "Bridge SHM",
-    source: language === "zh" ? "来源" : "Source",
-    citations: language === "zh" ? "被引" : "Cited by",
-    advisors: language === "zh" ? "导师" : "Advisors",
-    current: language === "zh" ? "在读" : "Current",
-    phone: language === "zh" ? "电话 / 微信" : "Phone / WeChat",
-    profile: language === "zh" ? "研究主页" : "Research profile",
-    openNavigation: language === "zh" ? "打开导航" : "Open navigation",
-    closeNavigation: language === "zh" ? "关闭导航" : "Close navigation",
-    mobileNavigation: language === "zh" ? "页面导航" : "Page navigation",
-  };
-
-  const closeMobileNav = () => setMobileNavOpen(false);
-
-  const handleMobileNavigation = (event: MouseEvent<HTMLAnchorElement>, targetId: string) => {
+  function navigate(event: MouseEvent<HTMLAnchorElement>, id: string) {
     event.preventDefault();
     setMobileNavOpen(false);
-    window.history.pushState({}, "", `#${targetId}`);
-    window.requestAnimationFrame(() => {
-      document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  };
-
+    window.history.pushState({}, "", `#${id}`);
+    document
+      .getElementById(id)
+      ?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+        block: "start",
+      });
+  }
   return (
-    <main className="site-shell" id="main-content">
-      <a className="skip-link" href="#main-content">{language === "zh" ? "跳转到主要内容" : "Skip to main content"}</a>
-
+    <div className="site-shell">
+      <a className="skip-link" href="#main-content">
+        {zh ? "跳转到主要内容" : "Skip to main content"}
+      </a>
       <header className="site-header">
-        <div className="container header-inner">
-          <button className="mobile-menu-toggle" type="button" aria-expanded={mobileNavOpen} aria-controls="mobile-navigation" aria-label={mobileNavOpen ? copy.closeNavigation : copy.openNavigation} onClick={() => setMobileNavOpen((open) => !open)}>
-            <span className="mobile-menu-icon" aria-hidden="true"><i /><i /><i /></span>
-          </button>
-          <a className="wordmark" href="#top" aria-label="侯佳乐 / Jiale Hou">
-            <strong>侯佳乐</strong>
-            <span>Jiale Hou</span>
-          </a>
-          <nav className="main-nav" aria-label={copy.navLabel}>
-            {navItems.map((item) => <a href={`#${item.id}`} key={item.id}>{language === "zh" ? item.zh : item.en}</a>)}
-          </nav>
-          <button className="language-switch" type="button" onClick={toggleLanguage} aria-label={language === "zh" ? "Switch to English" : "切换到中文"}>
-            {language === "zh" ? "EN" : "中文"}
+        <a className="mobile-wordmark" href="#top">
+          侯佳乐<span>Jiale Hou</span>
+        </a>
+        <nav
+          className="desktop-nav"
+          aria-label={zh ? "主导航" : "Primary navigation"}
+        >
+          {resumeSections.slice(1, 6).map((section) => (
+            <a key={section.id} href={`#${section.id}`}>
+              {section[language]}
+            </a>
+          ))}
+        </nav>
+        <div className="header-actions">
+          <LanguageSwitch language={language} onClick={toggleLanguage} />
+          <button
+            className="mobile-menu-toggle"
+            type="button"
+            aria-controls="mobile-navigation"
+            aria-expanded={mobileNavOpen}
+            aria-label={zh ? "页面导航" : "Page navigation"}
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+          >
+            {mobileNavOpen ? "×" : "☰"}
           </button>
         </div>
+        <nav
+          className="mobile-navigation"
+          id="mobile-navigation"
+          hidden={!mobileNavOpen}
+          aria-label={zh ? "页面导航" : "Page navigation"}
+        >
+          {resumeSections.map((section) => (
+            <a
+              href={`#${section.id}`}
+              key={section.id}
+              onClick={(event) => navigate(event, section.id)}
+            >
+              {section[language]}
+              <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </nav>
       </header>
-
-      <div className={`mobile-nav-shell${mobileNavOpen ? " is-open" : ""}`} aria-hidden={!mobileNavOpen}>
-        <button className="mobile-nav-backdrop" type="button" aria-label={copy.closeNavigation} onClick={closeMobileNav} />
-        <aside className="mobile-nav-drawer" id="mobile-navigation" aria-label={copy.mobileNavigation}>
-          <button className="mobile-nav-close" type="button" aria-label={copy.closeNavigation} onClick={closeMobileNav}>×</button>
-          <nav className="mobile-nav-links" aria-label={copy.navLabel}>
-            {navItems.map((item, index) => <a href={`#${item.id}`} key={item.id} onClick={(event) => handleMobileNavigation(event, item.id)}><b>{String(index + 1).padStart(2, "0")}</b><span>{language === "zh" ? item.zh : item.en}</span></a>)}
-          </nav>
-          <button className="mobile-language-switch" type="button" onClick={toggleLanguage}>
-            <span className="mobile-language-label">
-              <svg className="mobile-language-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><path d="M3.8 12h16.4M12 3.5c2.2 2.3 3.4 5.1 3.4 8.5S14.2 18.2 12 20.5C9.8 18.2 8.6 15.4 8.6 12S9.8 5.8 12 3.5Z" /></svg>
-              <span>{language === "zh" ? "语言" : "Language"}</span>
-            </span>
-            <b>{language === "zh" ? "EN" : "中文"}</b>
-          </button>
-        </aside>
-      </div>
-
-      <aside className="profile-rail" id="top" aria-label={language === "zh" ? "个人信息" : "Profile information"}>
-        <div className="profile-rail-inner">
-          <a className="profile-rail-name" href="#top">
-            <strong>侯佳乐</strong>
-            <span>Jiale Hou</span>
+      <aside
+        className="profile-rail"
+        id="top"
+        aria-label={zh ? "个人信息" : "Profile information"}
+      >
+        <div className="profile-identity">
+          <img
+            className="profile-photo"
+            src="/profile.jpg"
+            alt={zh ? "侯佳乐个人照片" : "Portrait of Jiale Hou"}
+            width="112"
+            height="140"
+          />
+          <div>
+            <h1>侯佳乐</h1>
+            <p className="english-name">Jiale Hou</p>
+          </div>
+        </div>
+        <p className="profile-role">
+          {zh
+            ? "清华大学 · 土木工程"
+            : "Tsinghua University · Civil Engineering"}
+          <br />
+          {zh ? "工学博士研究生" : "Ph.D. candidate"}
+        </p>
+        <p className="graduation">
+          <span aria-hidden="true" />
+          {zh ? "预计 2027 年 6 月毕业" : "Graduating in June 2027"}
+        </p>
+        <div className="rail-block">
+          <span className="eyebrow">
+            {zh ? "研究兴趣" : "Research interests"}
+          </span>
+          <p>
+            {zh ? "计算机视觉 / 视觉智能体" : "Computer vision / Visual agents"}
+            <br />
+            {zh
+              ? "基础设施感知 / Agent 工程"
+              : "Infrastructure sensing / Agent engineering"}
+          </p>
+        </div>
+        <div className="rail-block rail-contact">
+          <span className="eyebrow">{zh ? "联系方式" : "Contact"}</span>
+          <a href="mailto:hjl23@mails.tsinghua.edu.cn">
+            hjl23@mails.tsinghua.edu.cn
           </a>
-          <img className="profile-rail-photo" src="/profile.jpg" alt={language === "zh" ? "侯佳乐个人照片" : "Portrait of Jiale Hou"} />
-          <div className="profile-rail-block">
-            <span className="profile-rail-label">{language === "zh" ? "身份" : "Position"}</span>
-            <p>{language === "zh" ? "清华大学 · 土木工程" : "Tsinghua University · Civil Engineering"}</p>
-            <p>{language === "zh" ? "博士研究生 · 防灾减灾工程" : "Ph.D. candidate · Disaster mitigation"}</p>
-          </div>
-          <div className="profile-rail-block">
-            <span className="profile-rail-label">{language === "zh" ? "导师" : "Advisors"}</span>
-            <p><a className="profile-rail-inline-link" href="https://civil.seu.edu.cn/zy2/list.htm" target="_blank" rel="noreferrer">{language === "zh" ? "张熠教授" : "Prof. Yi Zhang"}</a></p>
-            <p>{language === "zh" ? "顾辰教授" : "Prof. Chen Gu"}</p>
-          </div>
-          <div className="profile-rail-block profile-rail-contact">
-            <span className="profile-rail-label">{language === "zh" ? "联系方式" : "Contact"}</span>
-            <a href="mailto:hjl23@mails.tsinghua.edu.cn">hjl23@mails.tsinghua.edu.cn</a>
-            <a href="tel:+8619909676556">19909676556</a>
-            <p>{language === "zh" ? "微信同号" : "WeChat: same number"}</p>
-          </div>
-          <div className="profile-rail-block profile-rail-research">
-            <span className="profile-rail-label">{language === "zh" ? "研究方向" : "Research"}</span>
-            <a href="#research"><b>R.01</b>{language === "zh" ? "灾后结构视觉感知与非接触响应测量" : "Vision-based structural sensing"}</a>
-            <a href="#research"><b>R.02</b>{language === "zh" ? "桥梁结构健康监测与数据驱动状态识别" : "Data-driven bridge monitoring"}</a>
-          </div>
+          <a href="tel:+8619909676556">+86 19909676556</a>
+          <span className="muted">
+            {zh ? "微信同号" : "WeChat: same number"}
+          </span>
         </div>
+        <div className="profile-links">
+          <a href={scholarUrl} target="_blank" rel="noreferrer">
+            Google Scholar ↗
+          </a>
+          <a href={profileUrl} target="_blank" rel="noreferrer">
+            ResearchGate ↗
+          </a>
+          <a
+            href="https://github.com/houseu2000"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub ↗
+          </a>
+        </div>
+        <a className="rail-back-top" href="#top">
+          {zh ? "回到顶部" : "Back to top"} ↑
+        </a>
       </aside>
-
-      <section className="hero-section" id="legacy-hero" aria-labelledby="hero-title">
-        <div className="container hero-grid">
-          <div className="hero-copy">
-            <p className="overline">Academic homepage / 01</p>
-            <h1 id="hero-title">侯佳乐</h1>
-            <p className="hero-name">Jiale Hou</p>
-            <p className="hero-role">{copy.institution}<br />{copy.role}</p>
-            <p className="hero-intro">{copy.intro}</p>
-            <div className="hero-links">
-              <a href={scholarUrl} target="_blank" rel="noreferrer">{copy.scholar} <span>↗</span></a>
-              <a href="mailto:hjl23@mails.tsinghua.edu.cn">{copy.email} <span>↗</span></a>
-            </div>
+      <main className="resume-main" id="main-content">
+        <section
+          className="intro-section"
+          id="about"
+          aria-labelledby="about-title"
+        >
+          <span className="eyebrow">Jiale Hou / Research</span>
+          <h2 id="about-title">{zh ? "个人简介" : "Profile"}</h2>
+          <p className="intro-copy">
+            <RichText text={introduction[language]} />
+          </p>
+          <p className="intro-publications">{publicationSummary[language]}</p>
+          <div className="intro-tags">
+            <span>Computer Vision</span>
+            <span>Visual Agents</span>
+            <span>Infrastructure</span>
           </div>
-          <aside className="hero-aside" aria-label={language === "zh" ? "研究关键词" : "Research keywords"}>
-            <p className="aside-label">Research interests</p>
-            <div className="aside-item"><span>R.01</span><p>{language === "zh" ? "灾后结构视觉感知与非接触响应测量" : "Vision-based structural sensing and post-disaster assessment"}</p></div>
-            <div className="aside-item"><span>R.02</span><p>{language === "zh" ? "桥梁结构健康监测与数据驱动状态识别" : "Data-driven bridge structural health monitoring"}</p></div>
-          </aside>
-        </div>
-      </section>
-
-      <section className="content-section about-section" id="about" aria-labelledby="about-title">
-        <div className="container about-grid">
-          <div className="section-heading compact-heading"><span className="section-number">00</span><div><h2 id="about-title">{copy.aboutTitle}</h2></div></div>
-          <div className="about-copy">
-            {copy.aboutIntro.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-            <div className="about-links">
-              <a href={scholarUrl} target="_blank" rel="noreferrer">{copy.scholar} <span>↗</span></a>
-              <a href="mailto:hjl23@mails.tsinghua.edu.cn">{copy.email} <span>↗</span></a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section" id="research" aria-labelledby="research-title">
-        <div className="container">
-          <div className="section-heading"><span className="section-number">01</span><div><h2 id="research-title">{copy.researchTitle}</h2><p>{copy.researchIntro}</p></div></div>
-          <div className="research-list">
-            {researchTracks.map((track) => <article className="research-item" key={track.number}>
-              <span className="item-number">01.{track.number}</span>
-              <div className="research-item-body">
-                <h3>{localize(track.title, language)}</h3>
-                <p>{localize(track.description, language)}</p>
-                <ul>{localizeList(track.methods, language).map((method) => <li key={method}>{method}</li>)}</ul>
-              <ResearchGallery track={track} language={language} figureLabel={copy.figureLabel} figureSource={copy.figureSource} />
-              </div>
-            </article>)}
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section paper-section" id="publications" aria-labelledby="publications-title">
-        <div className="container">
-          <div className="section-heading"><span className="section-number">02</span><div><h2 id="publications-title">{copy.publicationsTitle}</h2><p>{copy.publicationsIntro} <a href={scholarUrl} target="_blank" rel="noreferrer">Google Scholar ↗</a></p></div></div>
-          <div className="filter-row" role="tablist" aria-label={language === "zh" ? "论文筛选" : "Publication filters"}>
-            {(["all", "vision", "bridge"] as Filter[]).map((option) => {
-              const label = option === "all" ? copy.all : option === "vision" ? copy.vision : copy.bridge;
-              return <button type="button" role="tab" aria-selected={filter === option} className={filter === option ? "selected" : ""} onClick={() => setFilter(option)} key={option}>{label}</button>;
-            })}
-            <span>{filteredPublications.length} / {publications.length}</span>
-          </div>
-          <div className="publication-list">
-            {filteredPublications.map((paper) => <article className="publication-item" key={paper.title}>
-              <span className="publication-year">{paper.year}</span>
-              <div className="publication-main"><h3>{paper.title}</h3><p>{renderAuthors(paper.authors)}{paper.authorNote && <span className="publication-author-note"> · {localize(paper.authorNote, language)}</span>}</p></div>
-              <div className="publication-citation"><span>{copy.citations}</span><strong>{paper.citationCount ?? "—"}</strong></div>
-              <span className="publication-venue">{paper.venue}</span>
-              <a href={paper.url} target="_blank" rel="noreferrer" aria-label={`${copy.source}: ${paper.title}`}>{paper.doi ? "DOI" : "↗"}</a>
-            </article>)}
-          </div>
-        </div>
-      </section>
-
-      <section className="content-section" id="education" aria-labelledby="education-title">
-        <div className="container split-section">
-          <div className="section-heading compact-heading"><span className="section-number">03</span><div><h2 id="education-title">{copy.educationTitle}</h2></div></div>
+        </section>
+        <Section id="education" language={language}>
           <div className="education-list">
-            {education.map((item) => <article className="education-item" key={item.period.en}><span>{localize(item.period, language)}</span><div><h3>{localize(item.institution, language)}</h3><p>{localize(item.degree, language)}</p>{item.advisors && <p className="education-advisors"><b>{copy.advisors}</b>{item.advisors.map((advisor) => <a href={advisor.url} target="_blank" rel="noreferrer" key={advisor.url}>{localize(advisor.name, language)}</a>)}</p>}{item.current && <em>{copy.current}</em>}</div></article>)}
+            {resumeEducation.map((item, index) => (
+              <article className="education-item" key={item.school.en}>
+                <span className="timeline-dot" aria-hidden="true" />
+                <div className="entry-heading">
+                  <h3>{item.school[language]}</h3>
+                  <span className="entry-date">{item.period[language]}</span>
+                </div>
+                <p className="education-degree">
+                  {item.degree[language]}
+                  {index === 0 && (
+                    <span className="small-badge">
+                      {zh ? "在读" : "Current"}
+                    </span>
+                  )}
+                </p>
+                <p className="entry-note">{item.note[language]}</p>
+              </article>
+            ))}
           </div>
-        </div>
-      </section>
-
-      <section className="content-section honors-section" id="honors" aria-labelledby="honors-title">
-        <div className="container">
-          <div className="section-heading"><span className="section-number">04</span><div><h2 id="honors-title">{copy.honorsTitle}</h2></div></div>
+        </Section>
+        <Section
+          id="research"
+          language={language}
+          extra={
+            <span className="section-aside">
+              {zh ? "研究项目 / 03" : "03 research projects"}
+            </span>
+          }
+        >
+          <div className="research-intent">
+            <h3>{zh ? "看见灾害中的结构、物体与人" : "Understanding structures, objects and people in disasters"}</h3>
+            <p>{zh
+              ? "从建筑位移、室内构件运动到人员行为，三个方向共同回答：灾害发生时，它们经历了什么？"
+              : "From building displacement and indoor object motion to human behavior, three directions ask what happens during a disaster."}</p>
+          </div>
+          <div className="research-list">
+            {researchProjects.map((project, index) => (
+              <article className="research-card" key={project.slug}>
+                <div className="research-meta">
+                  <span>
+                    {String(index + 1).padStart(2, "0")} /{" "}
+                    {project.showcase.subject[language]}
+                  </span>
+                  <span>{project.period[language]}</span>
+                </div>
+                <h3>
+                  <a
+                    className="research-title-link"
+                    href={`/research/${project.slug}/?lang=${language}`}
+                  >
+                    {project.title[language]}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </h3>
+                <p className="research-summary">
+                  {project.showcase.summary[language]}
+                </p>
+                <div className="research-gallery" role="group" aria-label={zh ? "研究图片预览" : "Research image previews"}>
+                  {project.showcase.images.map((figure) => (
+                    <a
+                      className="research-preview"
+                      key={figure.src}
+                      href={`/research/${project.slug}/?lang=${language}`}
+                      aria-label={`${project.title[language]} · ${figure.label[language]}`}
+                    >
+                      <div className="research-preview-image">
+                        <img src={figure.src} alt={figure.alt[language]} width={figure.width} height={figure.height} loading="lazy" />
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </Section>
+        <Section id="experience" language={language}>
+          <div className="experience-list">
+            {experiences.map((item) => (
+              <article className="experience-item" key={item.title.en}>
+                <div className="entry-heading">
+                  <h3>{item.title[language]}</h3>
+                  <span className="entry-date">
+                    {item.period}
+                    {item.period.endsWith("–")
+                      ? zh
+                        ? " 至今"
+                        : " Present"
+                      : ""}
+                  </span>
+                </div>
+                <p className="experience-role">{item.role[language]}</p>
+                <BulletList bullets={item.bullets} language={language} />
+              </article>
+            ))}
+          </div>
+        </Section>
+        <Section
+          id="publications"
+          language={language}
+          extra={
+            <a
+              className="inline-link"
+              href={scholarUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Google Scholar ↗
+            </a>
+          }
+        >
+          <p className="section-intro">
+            {zh
+              ? "第一作者或导师一作本人二作 SCI 期刊论文 7 篇，以下选列 3 篇代表作。"
+              : "Three selected papers from seven SCI publications as first author or second author with my advisor as first author."}
+          </p>
+          <ol className="publication-list">
+            {selectedPapers.map((paper) => (
+              <li key={paper.title}>
+                <h3>
+                  <a href={paper.url} target="_blank" rel="noreferrer">
+                    {paper.title}
+                    <span aria-hidden="true"> ↗</span>
+                  </a>
+                </h3>
+                <p>
+                  {paper.authors
+                    .split(/(Jiale Hou)/g)
+                    .map((part, index) =>
+                      part === "Jiale Hou" ? (
+                        <strong key={index}>{part}</strong>
+                      ) : (
+                        part
+                      ),
+                    )}
+                </p>
+                <p className="publication-venue">
+                  {paper.venue}
+                  <span> · {paper.year}</span>
+                </p>
+              </li>
+            ))}
+          </ol>
+          <details className="more-publications">
+            <summary>
+              {zh ? "查看完整论文列表" : "View all publications"}
+              <span>{publications.length}</span>
+            </summary>
+            <ol className="publication-list">
+              {publications.map((paper) => (
+                <li key={paper.title}>
+                  <h3>
+                    <a href={paper.url} target="_blank" rel="noreferrer">
+                      {paper.title} ↗
+                    </a>
+                  </h3>
+                  <p>{paper.authors}</p>
+                  <p className="publication-venue">
+                    {paper.venue} · {paper.year}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </details>
+        </Section>
+        <Section id="honors" language={language}>
           <div className="honors-list">
-            {awards.map((award, index) => <article className="honor-item" key={`${award.year}-${award.zh}`}><span>{award.year}</span><strong>04.{String(index + 1).padStart(2, "0")}</strong><div><h3>{language === "zh" ? award.zh : award.en}</h3><p>{language === "zh" ? award.orgZh : award.orgEn}</p></div></article>)}
+            {resumeHonors.map((honor) => (
+              <article className="honor-item" key={honor.title.en}>
+                <span className="entry-date">{honor.year}</span>
+                <div>
+                  <h3>{honor.title[language]}</h3>
+                  <p>{honor.org[language]}</p>
+                </div>
+              </article>
+            ))}
           </div>
-        </div>
-      </section>
-
-      <section className="contact-section" id="contact" aria-labelledby="contact-title">
-        <div className="container contact-grid">
-          <div><span className="section-number">05</span><h2 id="contact-title">{copy.contactTitle}</h2><p>{copy.contactIntro}</p></div>
-          <div className="contact-list">
-            <a href="mailto:hjl23@mails.tsinghua.edu.cn"><span>{copy.email}</span><strong>hjl23@mails.tsinghua.edu.cn</strong><b>↗</b></a>
-            <a href="tel:+8619909676556"><span>{copy.phone}</span><strong>19909676556</strong><b>↗</b></a>
-            <a href={profileUrl} target="_blank" rel="noreferrer"><span>{copy.profile}</span><strong>ResearchGate / Jiale Hou</strong><b>↗</b></a>
+        </Section>
+        <Section id="activities" language={language}>
+          <div className="activities-list">
+            {activities.map((activity) => (
+              <article key={activity.label!.en}>
+                <h3>{activity.label![language]}</h3>
+                <p>{activity.text[language]}</p>
+                {activity.href && (
+                  <a
+                    className="inline-link"
+                    href={activity.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Zen ↗
+                  </a>
+                )}
+              </article>
+            ))}
           </div>
-        </div>
-      </section>
-
-      <footer className="site-footer"><div className="container"><span>© 2026 侯佳乐 / Jiale Hou</span><span>Academic homepage · Civil engineering</span></div></footer>
-    </main>
+        </Section>
+        <footer className="site-footer">
+          <span>© 2026 侯佳乐 · Jiale Hou</span>
+          <a href="mailto:hjl23@mails.tsinghua.edu.cn">
+            {zh ? "联系我" : "Get in touch"} ↗
+          </a>
+        </footer>
+      </main>
+    </div>
   );
 }

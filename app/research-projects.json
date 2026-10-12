@@ -1,0 +1,1203 @@
+[
+  {
+    "slug": "structural-response",
+    "title": {
+      "zh": "灾害场景下基于视觉的结构响应测量",
+      "en": "Vision-based structural response measurement in disaster scenarios"
+    },
+    "area": {
+      "zh": "视觉测量",
+      "en": "Visual measurement"
+    },
+    "period": {
+      "zh": "2023.02 – 至今",
+      "en": "2023.02 – Present"
+    },
+    "bullets": [
+      {
+        "label": {
+          "zh": "目标问题",
+          "en": "Research problem"
+        },
+        "text": {
+          "zh": "针对传感器难以大规模部署的问题，研究如何利用已有监控设备自动恢复结构位移与运动响应。",
+          "en": "Recover structural displacement and motion from existing surveillance cameras where large-scale sensor deployment is impractical."
+        }
+      },
+      {
+        "label": {
+          "zh": "机器视觉测量",
+          "en": "Visual measurement"
+        },
+        "text": {
+          "zh": "面向低分辨率、噪声和运动模糊的室内监控视频，改进核相关滤波器，引入高斯图像金字塔、多通道边缘特征及 DFT 响应上采样，实现亚像素目标定位，并结合单应性变换完成层间物理位移测量。",
+          "en": "Improve kernelized correlation filters with Gaussian image pyramids, multi-channel edge features and DFT response upsampling for subpixel localization in degraded surveillance footage. Use homography and scale calibration to recover physical inter-storey displacement."
+        }
+      },
+      {
+        "label": {
+          "zh": "学习式多点跟踪",
+          "en": "Learned point tracking"
+        },
+        "text": {
+          "zh": "基于 CoTracker3 构建噪声增强 MOVi-F 数据进行微调，并结合空间均衡 SIFT 特征点、全局与局部 SVD 刚体运动估计及 EKF 融合，实现灾害场景下结构平动与转角联合测量。",
+          "en": "Fine-tune CoTracker3 using noise-augmented MOVi-F data. Combine spatially balanced SIFT points, global and local SVD rigid-motion estimation, and EKF fusion to jointly measure structural translation and rotation."
+        }
+      },
+      {
+        "label": {
+          "zh": "实验验证",
+          "en": "Validation"
+        },
+        "text": {
+          "zh": "在三层全尺度钢框架振动台录像中验证。IKCF 在强噪声与模糊组合场景下 x 向 RMSE 为 **0.661 mm**；学习式方法在叠加遮挡与旋转的 Case 2（200 点）下，Y 向 RMSE 为 **0.941 mm**、转角 RMSE 为 **0.137°**，并在真实地震视频中开展可行性演示。",
+          "en": "Validate with full-scale three-storey steel-frame shaking-table footage. IKCF achieves **0.661 mm** x RMSE under combined strong noise and blur. In compound Case 2 with 200 points, the learned method achieves **0.941 mm** Y RMSE and **0.137°** rotation RMSE. Real-earthquake videos provide feasibility demonstrations."
+        }
+      },
+      {
+        "label": {
+          "zh": "相关成果",
+          "en": "Outputs"
+        },
+        "text": {
+          "zh": "已发表 MSSP 第一作者 SCI 论文 1 篇，另有 1 篇第一作者论文已被 SCHM 接收（In press）。",
+          "en": "One first-author SCI paper published in MSSP; another first-author paper accepted by SCHM (in press)."
+        }
+      }
+    ],
+    "details": [
+      {
+        "type": "image",
+        "src": "/research/structural-response/scidms.webp",
+        "alt": {
+          "zh": "研究场景：利用室内监控恢复层间相对运动。来源：论文一，图 1。",
+          "en": "Research setting: use indoor cameras to recover relative inter-storey motion. Study 1, Fig. 1."
+        },
+        "caption": {
+          "zh": "监控相机与层间相对运动 · 论文一图 1",
+          "en": "Camera and relative floor motion · Study 1, Fig. 1"
+        },
+        "width": 1421,
+        "height": 792
+      },
+      {
+        "type": "chapter",
+        "id": "ikcf",
+        "label": {
+          "zh": "研究一 · 已发表",
+          "en": "Study 01 · Published"
+        },
+        "heading": {
+          "zh": "IKCF：层间位移测量",
+          "en": "IKCF: inter-storey displacement"
+        },
+        "body": {
+          "zh": "改进相关滤波算法 **IKCF**，结合透视校正与尺度换算，从监控画面恢复层间位移。",
+          "en": "The improved correlation filter **IKCF** combines perspective correction and metric scaling to recover inter-storey displacement."
+        },
+        "publication": {
+          "title": "An automatic method for measuring inter-storey structural displacement based on vision data",
+          "venue": "Mechanical Systems and Signal Processing · 237 · 113123 · 2025",
+          "status": {
+            "zh": "已发表",
+            "en": "Published"
+          },
+          "href": "https://doi.org/10.1016/j.ymssp.2025.113123"
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/structural-response/ikcf-method.webp",
+        "alt": {
+          "zh": "IKCF 方法总览：图像金字塔、边缘特征与 DFT 上采样共同改进目标定位。来源：论文一，图 2。",
+          "en": "IKCF combines image pyramids, edge features and DFT upsampling for robust target localization. Study 1, Fig. 2."
+        },
+        "caption": {
+          "zh": "IKCF：扩大搜索范围、增强边缘、细化定位 · 论文一图 2",
+          "en": "IKCF search, edge features and subpixel localization · Study 1, Fig. 2"
+        },
+        "width": 1940,
+        "height": 1073
+      },
+      {
+        "type": "text",
+        "body": {
+          "zh": "在三层全尺度钢框架振动台试验中，以位移传感器为参考，检验降采样、噪声与模糊下的测量精度。",
+          "en": "A full-scale three-storey shaking-table test uses displacement sensors to validate measurement under reduced resolution, noise and blur."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/structural-response/shaking-table.webp",
+        "alt": {
+          "zh": "试验布置：三层钢框架、相机安装位置及楼层目标。来源：论文一，图 4。",
+          "en": "Experimental setup: three-storey steel frame, camera mounting and floor targets. Study 1, Fig. 4."
+        },
+        "caption": {
+          "zh": "全尺度振动台与相机布置 · 论文一图 4",
+          "en": "Full-scale shaking-table setup · Study 1, Fig. 4"
+        },
+        "width": 1694,
+        "height": 1471
+      },
+      {
+        "type": "image",
+        "src": "/research/structural-response/ikcf-validation.webp",
+        "alt": {
+          "zh": "1080p、8 Hz 视频下的位移时程与频谱对比，展示视觉测量与位移传感器的一致性。来源：论文一，图 7。",
+          "en": "Displacement histories and spectra from 1080p video sampled at 8 Hz, compared with displacement sensors. Study 1, Fig. 7."
+        },
+        "caption": {
+          "zh": "视觉位移与传感器参考对比 · 论文一图 7",
+          "en": "Visual displacement versus sensor reference · Study 1, Fig. 7"
+        },
+        "width": 1873,
+        "height": 1197
+      },
+      {
+        "type": "table",
+        "heading": {
+          "zh": "噪声与模糊叠加时的测量精度",
+          "en": "Accuracy under combined noise and blur"
+        },
+        "columns": [
+          {
+            "zh": "模拟场景",
+            "en": "Scenario"
+          },
+          {
+            "zh": "x 向 RMSE (mm)",
+            "en": "x RMSE (mm)"
+          },
+          {
+            "zh": "x 向 CC",
+            "en": "x CC"
+          }
+        ],
+        "rows": [
+          [
+            "S1",
+            "0.472",
+            "0.977"
+          ],
+          [
+            "S2",
+            "0.510",
+            "0.968"
+          ],
+          [
+            "S3",
+            "0.661",
+            "0.939"
+          ]
+        ],
+        "note": {
+          "zh": "论文一表 5，完整目标条件。S1–S3 的噪声与模糊逐级增强；RMSE 越低、相关系数 CC 越接近 1 越好。这些数值对应受控试验，不是真实地震录像的绝对误差。",
+          "en": "Study 1, Table 5, full-target setting. Noise and blur increase from S1 to S3. Lower RMSE and CC closer to 1 indicate better agreement. These are controlled-test results, not absolute errors measured in real-earthquake footage."
+        }
+      },
+      {
+        "type": "chapter",
+        "id": "point-tracking",
+        "label": {
+          "zh": "研究二 · In press",
+          "en": "Study 02 · In press"
+        },
+        "heading": {
+          "zh": "多点跟踪：位移与转角",
+          "en": "Point tracking: displacement and rotation"
+        },
+        "body": {
+          "zh": "利用 **CoTracker3 多点跟踪、SVD 与 EKF 融合**，在部分遮挡下恢复平移与平面内转角。",
+          "en": "Combine **CoTracker3 point tracking, SVD and EKF** to recover translation and in-plane rotation under partial occlusion."
+        },
+        "publication": {
+          "title": "Robust Inter-storey Visual Displacement and Rotation Measurement in Disaster Scenes Using a Learning-based Point-Tracking Method",
+          "venue": "SCHM",
+          "status": {
+            "zh": "已接收 · In press",
+            "en": "Accepted · In press"
+          }
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/structural-response/point-tracking-method.webp",
+        "alt": {
+          "zh": "多点测量流程：透视校正 → 特征点初始化 → 学习式跟踪 → SVD 与 EKF 位移、转角估计。来源：论文二，图 1。",
+          "en": "Pipeline: perspective correction, feature initialization, learned tracking, and displacement/rotation estimation with SVD and EKF. Study 2, Fig. 1."
+        },
+        "caption": {
+          "zh": "多点跟踪与运动融合流程 · 论文二图 1",
+          "en": "Point tracking and motion fusion · Study 2, Fig. 1"
+        },
+        "width": 1921,
+        "height": 936
+      },
+      {
+        "type": "text",
+        "heading": {
+          "zh": "复合干扰验证",
+          "en": "Validation under combined interference"
+        },
+        "body": {
+          "zh": "Case 2 叠加 50% 区域遮挡（320 帧）和 1° 合成旋转。200 点配置微调后，转角 RMSE 从 **0.226° 降至 0.137°**，Y 向误差从 **1.389 降至 0.941 mm**。",
+          "en": "Case 2 adds 50% area occlusion for 320 frames and 1° synthetic rotation. Fine-tuning with 200 points reduces rotation RMSE from **0.226° to 0.137°** and Y-displacement RMSE from **1.389 to 0.941 mm**."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/structural-response/compound-results.webp",
+        "alt": {
+          "zh": "复合干扰试验：上排为 100 点，下排为 200 点；蓝色为原始 CoTracker3，橙色为微调模型，灰色为参考值。来源：论文二，图 9。",
+          "en": "Compound-degradation experiments: 100 points in the upper row, 200 below. Blue: original CoTracker3; orange: fine-tuned model; gray: reference. Study 2, Fig. 9."
+        },
+        "caption": {
+          "zh": "100 / 200 点的复合干扰结果 · 论文二图 9",
+          "en": "Combined-interference results with 100 / 200 points · Study 2, Fig. 9"
+        },
+        "width": 2400,
+        "height": 1350
+      },
+      {
+        "type": "table",
+        "heading": {
+          "zh": "Case 2：微调前后的量化对比",
+          "en": "Case 2: quantitative effect of fine-tuning"
+        },
+        "columns": [
+          {
+            "zh": "指标",
+            "en": "Metric"
+          },
+          {
+            "zh": "CoTracker3",
+            "en": "CoTracker3"
+          },
+          {
+            "zh": "微调后",
+            "en": "Fine-tuned"
+          }
+        ],
+        "rows": [
+          [
+            "Rotation RMSE (°)",
+            "0.226",
+            "0.137"
+          ],
+          [
+            "Rotation CC",
+            "0.978",
+            "0.993"
+          ],
+          [
+            "Y RMSE (mm)",
+            "1.389",
+            "0.941"
+          ],
+          [
+            "Y CC",
+            "0.666",
+            "0.871"
+          ]
+        ],
+        "note": {
+          "zh": "论文二表 4，200 个初始点，相同后处理。转角 RMSE 降低约 39.4%，Y 向位移 RMSE 降低约 32.3%。旋转由已知变换合成，位移使用传感器参考。",
+          "en": "Study 2, Table 4; 200 initial points and identical downstream processing. Rotation RMSE decreases by about 39.4%, and Y-displacement RMSE by about 32.3%. Rotation has a known synthetic reference; displacement is compared with sensors."
+        }
+      },
+      {
+        "type": "text",
+        "heading": {
+          "zh": "选点与轨迹融合",
+          "en": "Point selection and trajectory fusion"
+        },
+        "body": {
+          "zh": "相同 100 点预算下，均衡空间选点将 Y 向 RMSE 从 **2.518 降至 0.946 mm**；融合全局与局部估计，可进一步改善轨迹稳定性。",
+          "en": "With the same 100-point budget, spatially balanced selection reduces Y RMSE from **2.518 to 0.946 mm**. Combining global and local estimates further improves trajectory stability."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/structural-response/point-distribution.webp",
+        "alt": {
+          "zh": "固定 100 个初始点，比较不同网格划分下的空间覆盖。k = 1 为全局选点；k ≥ 2 在各网格内均衡选择。来源：论文二，图 16。",
+          "en": "Spatial coverage with 100 initial points. k = 1 uses global selection; k ≥ 2 balances selection across grid cells. Study 2, Fig. 16."
+        },
+        "caption": {
+          "zh": "相同点数，不同空间分布 · 论文二图 16",
+          "en": "Fixed point count, different spatial coverage · Study 2, Fig. 16"
+        },
+        "width": 2400,
+        "height": 628
+      },
+      {
+        "type": "image",
+        "src": "/research/structural-response/ekf-ablation.webp",
+        "alt": {
+          "zh": "Case 2 的融合消融试验：比较全局 SVD、局部 SVD 与 SVD–EKF。来源：论文二，图 11。",
+          "en": "Case 2 ablation comparing global SVD, local SVD accumulation and SVD–EKF fusion. Study 2, Fig. 11."
+        },
+        "caption": {
+          "zh": "全局、局部与 EKF 融合估计 · 论文二图 11",
+          "en": "Global, local and EKF-fused estimates · Study 2, Fig. 11"
+        },
+        "width": 2370,
+        "height": 1800
+      },
+      {
+        "type": "image",
+        "src": "/research/structural-response/osaka-tracking.webp",
+        "alt": {
+          "zh": "大阪地震视频中的多点跟踪，绿色点表示跟踪位置，黄色框标记目标区域。来源：论文二，图 13。",
+          "en": "Multi-point tracking in Osaka earthquake footage. Green points show tracked positions; the yellow box marks the target region. Study 2, Fig. 13."
+        },
+        "caption": {
+          "zh": "大阪地震：动态遮挡下的多点跟踪 · 论文二图 13",
+          "en": "Osaka earthquake: point tracking through occlusion · Study 2, Fig. 13"
+        },
+        "width": 2035,
+        "height": 1116
+      },
+      {
+        "type": "chapter",
+        "id": "videos",
+        "label": {
+          "zh": "视频演示",
+          "en": "Video demonstrations"
+        },
+        "heading": {
+          "zh": "真实地震演示",
+          "en": "Earthquake demonstrations"
+        },
+        "body": {
+          "zh": "论文一的两段补充视频，对照展示跟踪结果与位移曲线。",
+          "en": "Two supplementary videos from Study 1 compare tracking results and displacement curves."
+        }
+      },
+      {
+        "type": "videos",
+        "items": [
+          {
+            "title": {
+              "zh": "山东室内案例",
+              "en": "Shandong indoor case"
+            },
+            "src": "/research/structural-response/shandong-ikcf.mp4",
+            "poster": "/research/structural-response/shandong-poster.jpg",
+            "caption": {
+              "zh": "论文一补充视频 4 · 跟踪结果与位移曲线。",
+              "en": "Study 1, supplementary Video 4 · tracking and displacement curves."
+            }
+          },
+          {
+            "title": {
+              "zh": "甘肃积石山案例",
+              "en": "Gansu Jishishan case"
+            },
+            "src": "/research/structural-response/gansu-ikcf.mp4",
+            "poster": "/research/structural-response/gansu-poster.jpg",
+            "caption": {
+              "zh": "论文一补充视频 5 · 跟踪结果与位移曲线。",
+              "en": "Study 1, supplementary Video 5 · tracking and displacement curves."
+            }
+          }
+        ]
+      },
+      {
+        "type": "note",
+        "heading": {
+          "zh": "测量边界",
+          "en": "Measurement scope"
+        },
+        "body": {
+          "zh": "定量精度来自受控试验。真实地震录像没有同步位移真值，且可能包含相机自身振动；第二篇测量的是平面内运动。",
+          "en": "Accuracy is validated in controlled tests. Earthquake footage has no synchronized displacement ground truth and may include camera vibration. Study 2 estimates in-plane motion."
+        }
+      }
+    ],
+    "overview": {
+      "zh": "灾害发生时，建筑的层间位移是理解结构响应的重要信息，但专用传感器难以覆盖所有建筑。我们利用已有监控记录结构的位移与转角，为灾后响应分析提供依据。",
+      "en": "Inter-storey displacement helps reveal how a building responds during a disaster, yet dedicated sensors cannot cover every building. We use existing surveillance cameras to measure displacement and rotation, supporting post-disaster response analysis."
+    },
+    "showcase": {
+      "subject": {
+        "zh": "结构",
+        "en": "Structures"
+      },
+      "summary": {
+        "zh": "建筑晃动了多少？从已有监控中恢复层间位移，为结构响应评估提供依据。",
+        "en": "How much did a building move? Recover inter-storey displacement from existing cameras to support structural response assessment."
+      },
+      "images": [
+        {
+          "src": "/research/structural-response/scidms.webp",
+          "alt": {
+            "zh": "研究场景：利用室内监控恢复层间相对运动。来源：论文一，图 1。",
+            "en": "Research setting: use indoor cameras to recover relative inter-storey motion. Study 1, Fig. 1."
+          },
+          "label": {
+            "zh": "监控测量",
+            "en": "Camera sensing"
+          },
+          "width": 1421,
+          "height": 792
+        },
+        {
+          "src": "/research/structural-response/shaking-table.webp",
+          "alt": {
+            "zh": "试验布置：三层钢框架、相机安装位置及楼层目标。来源：论文一，图 4。",
+            "en": "Experimental setup: three-storey steel frame, camera mounting and floor targets. Study 1, Fig. 4."
+          },
+          "label": {
+            "zh": "振动台验证",
+            "en": "Shaking-table tests"
+          },
+          "width": 1694,
+          "height": 1471
+        },
+        {
+          "src": "/research/structural-response/compound-results.webp",
+          "alt": {
+            "zh": "复合干扰试验：上排为 100 点，下排为 200 点；蓝色为原始 CoTracker3，橙色为微调模型，灰色为参考值。来源：论文二，图 9。",
+            "en": "Compound-degradation experiments: 100 points in the upper row, 200 below. Blue: original CoTracker3; orange: fine-tuned model; gray: reference. Study 2, Fig. 9."
+          },
+          "label": {
+            "zh": "抗干扰跟踪",
+            "en": "Robust tracking"
+          },
+          "width": 2400,
+          "height": 1350
+        }
+      ]
+    }
+  },
+  {
+    "slug": "rgbd-motion-reconstruction",
+    "title": {
+      "zh": "基于 RGB-D 视觉的室内灾害场景运动感知与重建",
+      "en": "RGB-D motion sensing and reconstruction of indoor disaster scenes"
+    },
+    "area": {
+      "zh": "视觉动态重建",
+      "en": "Dynamic reconstruction"
+    },
+    "period": {
+      "zh": "2025.07 – 至今",
+      "en": "2025.07 – Present"
+    },
+    "bullets": [
+      {
+        "label": {
+          "zh": "目标问题",
+          "en": "Research problem"
+        },
+        "text": {
+          "zh": "联合估计非结构构件 6D 位姿与楼层相对位移，在统一物理尺度下重建室内晃动、滑移和倾覆过程。",
+          "en": "Jointly estimate NSC 6D poses and relative floor displacement to reconstruct indoor shaking, sliding and overturning at a consistent physical scale."
+        }
+      },
+      {
+        "label": {
+          "zh": "非结构构件 6D 运动感知",
+          "en": "6D motion sensing"
+        },
+        "text": {
+          "zh": "面向地震等灾害中家具、设备等室内非结构构件，基于 **SAM + FoundationPose** 构建 RGB-D 6D 位姿估计与连续跟踪方法，实现物体平移、旋转及倾覆过程的三维运动恢复。",
+          "en": "Use **SAM + FoundationPose** for RGB-D 6D pose estimation and continuous tracking of indoor furniture and equipment, recovering translation, rotation and overturning in 3D."
+        }
+      },
+      {
+        "label": {
+          "zh": "仿真与数据构建",
+          "en": "Simulation and data"
+        },
+        "text": {
+          "zh": "在 Blender 中构建三视角 RGB-D 场景，导出位姿与位移真值；利用深度驱动的地面平面拟合和 IKCF 测量楼层位移。实物实验采用手机多视角建模，并将运动轨迹映射到 Open3D 虚拟场景。",
+          "en": "Generate three-view RGB-D scenes and pose/displacement ground truth in Blender. Combine depth-based floor-plane fitting with IKCF for floor displacement. Physical tests use phone-based object models and map motion into Open3D scenes."
+        }
+      },
+      {
+        "label": {
+          "zh": "实验验证",
+          "en": "Validation"
+        },
+        "text": {
+          "zh": "9 条仿真 RGB-D 序列中，平均三维平移 RMSE 为 **2.8 cm**，平均旋转 RMSE 为 **3.25°**；三个视角下楼层位移 RMSE 为 **1.078–1.233 mm**。缩尺实物实验进一步展示对构件晃动与倾覆的跟踪和场景重建。",
+          "en": "Across nine simulated RGB-D sequences, mean 3D translation RMSE is **2.8 cm** and mean rotation RMSE is **3.25°**. Floor-displacement RMSE is **1.078–1.233 mm** across three views. Scaled physical tests demonstrate tracking and reconstruction of shaking and overturning."
+        }
+      },
+      {
+        "label": {
+          "zh": "相关成果",
+          "en": "Outputs"
+        },
+        "text": {
+          "zh": "第一作者论文已发表于 **Journal of Building Engineering**，2026 年 10 月 4 日在线发表。",
+          "en": "First-author paper published in **Journal of Building Engineering**, available online on 4 October 2026."
+        }
+      }
+    ],
+    "details": [
+      {
+        "type": "chapter",
+        "id": "method",
+        "heading": {
+          "zh": "物体与楼层，联合测量",
+          "en": "Measure objects and floors together"
+        },
+        "label": {
+          "zh": "01 · 方法",
+          "en": "01 · Method"
+        },
+        "body": {
+          "zh": "**SAM + FoundationPose** 跟踪物体，**深度几何 + IKCF** 测量楼层位移；两类运动共享物理尺度。",
+          "en": "**SAM + FoundationPose** tracks objects; **depth geometry + IKCF** measures floor displacement, with shared metric scale."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/rgbd-motion-reconstruction/pose-pipeline.webp",
+        "alt": {
+          "zh": "非结构构件 6D 位姿估计流程：RGB、深度、物体三维模型与首帧掩码共同输入位姿估计器。来源：论文图 1。",
+          "en": "NSC 6D pose pipeline: RGB, depth, object models and first-frame masks feed the pose estimator. Source: Fig. 1."
+        },
+        "caption": {
+          "zh": "RGB-D 物体位姿估计 · 图 1",
+          "en": "RGB-D object pose estimation · Fig. 1"
+        },
+        "width": 1304,
+        "height": 700
+      },
+      {
+        "type": "text",
+        "body": {
+          "zh": "地面分割、深度反投影与平面拟合，提供透视校正和真实尺度；仍需初始提示与目标选择。",
+          "en": "Floor segmentation, depth back-projection and plane fitting provide perspective correction and metric scale. Initial prompts and target selection remain necessary."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/rgbd-motion-reconstruction/depth-geometry.webp",
+        "alt": {
+          "zh": "深度驱动的透视校正：地面分割、三维点、平面拟合、局部坐标与单应性估计。来源：论文图 3。",
+          "en": "Depth-driven rectification: floor segmentation, 3D points, plane fitting, local coordinates and homography estimation. Source: Fig. 3."
+        },
+        "caption": {
+          "zh": "深度驱动的尺度恢复与透视校正 · 图 3",
+          "en": "Depth-based scale and perspective correction · Fig. 3"
+        },
+        "width": 1659,
+        "height": 486
+      },
+      {
+        "type": "chapter",
+        "id": "simulation",
+        "heading": {
+          "zh": "仿真精度验证",
+          "en": "Accuracy in simulation"
+        },
+        "label": {
+          "zh": "02 · 仿真验证",
+          "en": "02 · Simulation"
+        },
+        "body": {
+          "zh": "三视角、9 条 Blender 序列中，物体平移 / 旋转的平均 RMSE 为 **2.8 cm / 3.25°**，楼层位移 RMSE 为 **1.078–1.233 mm**。",
+          "en": "Across nine Blender sequences from three views, mean object translation / rotation RMSE is **2.8 cm / 3.25°**; floor-displacement RMSE is **1.078–1.233 mm**."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/rgbd-motion-reconstruction/simulation-tracking.webp",
+        "alt": {
+          "zh": "三个相机视角下的位姿跟踪关键帧，覆盖物体晃动和倾覆过程。来源：论文图 7。",
+          "en": "Pose-tracking keyframes from three camera viewpoints, including object shaking and overturning. Source: Fig. 7."
+        },
+        "caption": {
+          "zh": "三个视角下的物体跟踪 · 图 7",
+          "en": "Object tracking from three views · Fig. 7"
+        },
+        "width": 1658,
+        "height": 889
+      },
+      {
+        "type": "table",
+        "heading": {
+          "zh": "6D 位姿：相同输入条件下的对比",
+          "en": "6D pose: comparison under matched inputs"
+        },
+        "columns": [
+          {
+            "zh": "方法",
+            "en": "Method"
+          },
+          {
+            "zh": "平均平移 RMSE (m)",
+            "en": "Mean translation RMSE (m)"
+          },
+          {
+            "zh": "平均旋转 RMSE (°)",
+            "en": "Mean rotation RMSE (°)"
+          }
+        ],
+        "rows": [
+          [
+            "FoundationPose",
+            "0.028",
+            "3.25"
+          ],
+          [
+            "MegaPose",
+            "0.260",
+            "12.85"
+          ]
+        ],
+        "note": {
+          "zh": "来源：论文表 2。9 条 RGB-D 序列、共 810 帧，使用相同模型、相机参数、物体区域和评测帧。均值保留了 MegaPose 在两条柜体序列上的较大误差；比较结论限于这些测试场景。",
+          "en": "Source: Table 2. Nine RGB-D sequences and 810 frames, with matched object models, camera parameters, object regions and evaluation frames. The averages retain two large MegaPose cabinet-sequence errors; the comparison is specific to these test scenes."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/rgbd-motion-reconstruction/drift-validation.webp",
+        "alt": {
+          "zh": "三个相机视角下，估计楼层位移轨迹与仿真真值的对比。来源：论文图 10。",
+          "en": "Estimated floor-displacement trajectories versus simulated ground truth for three camera views. Source: Fig. 10."
+        },
+        "caption": {
+          "zh": "楼层位移与仿真真值对比 · 图 10",
+          "en": "Floor displacement versus simulation ground truth · Fig. 10"
+        },
+        "width": 1658,
+        "height": 542
+      },
+      {
+        "type": "chapter",
+        "id": "reconstruction",
+        "heading": {
+          "zh": "实物实验与三维重建",
+          "en": "Physical tests and 3D reconstruction"
+        },
+        "label": {
+          "zh": "03 · 实物与重建",
+          "en": "03 · Physical tests and reconstruction"
+        },
+        "body": {
+          "zh": "手机照片建立家具模型，RGB-D 相机记录缩尺实物运动，再将估计轨迹映射到 Open3D。",
+          "en": "Phone images build furniture models; an RGB-D camera records scaled physical tests, and estimated motion is mapped into Open3D."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/rgbd-motion-reconstruction/physical-setup.webp",
+        "alt": {
+          "zh": "缩尺实物实验：RGB-D 相机记录桌面和家具模型的运动。来源：论文图 11。",
+          "en": "Scaled physical setup: an RGB-D camera records tabletop and furniture-model motion. Source: Fig. 11."
+        },
+        "caption": {
+          "zh": "缩尺实物实验布置 · 图 11",
+          "en": "Scaled physical test setup · Fig. 11"
+        },
+        "width": 1304,
+        "height": 372
+      },
+      {
+        "type": "image",
+        "src": "/research/rgbd-motion-reconstruction/object-models.webp",
+        "alt": {
+          "zh": "由多视角照片重建的非结构构件模型，作为位姿估计的几何输入。来源：论文图 12。",
+          "en": "Object models reconstructed from multi-view photos provide geometric input for pose estimation. Source: Fig. 12."
+        },
+        "caption": {
+          "zh": "多视角照片重建的家具模型 · 图 12",
+          "en": "Furniture models from multi-view photos · Fig. 12"
+        },
+        "width": 914,
+        "height": 350
+      },
+      {
+        "type": "image",
+        "src": "/research/rgbd-motion-reconstruction/scene-reconstruction.webp",
+        "alt": {
+          "zh": "实物画面与虚拟空间中的运动重建：同一过程可从多个视角观察。来源：论文图 15。",
+          "en": "Physical scenes and their reconstructed motion in virtual space, viewed from multiple perspectives. Source: Fig. 15."
+        },
+        "caption": {
+          "zh": "实物运动与多视角三维重建 · 图 15",
+          "en": "Physical motion and multi-view reconstruction · Fig. 15"
+        },
+        "width": 1658,
+        "height": 814
+      },
+      {
+        "type": "text",
+        "heading": {
+          "zh": "运动重建演示",
+          "en": "Motion reconstruction"
+        },
+        "body": {
+          "zh": "中间为实拍，两侧为不同视角的重建。视频是离线回放。",
+          "en": "Recorded footage in the center, reconstructed views on either side. Videos show offline playback."
+        }
+      },
+      {
+        "type": "video",
+        "src": "/research/rgbd-motion-reconstruction/physical-case-1.mp4",
+        "poster": "/research/rgbd-motion-reconstruction/physical-case-1-poster.webp",
+        "width": 1280,
+        "height": 320,
+        "title": {
+          "zh": "实物案例 1 · 实拍与三维重建",
+          "en": "Physical case 1 · recorded and reconstructed motion"
+        },
+        "caption": {
+          "zh": "补充视频 2 · 实拍与双视角重建。",
+          "en": "Supplementary Video 2 · recorded and reconstructed views."
+        }
+      },
+      {
+        "type": "video",
+        "src": "/research/rgbd-motion-reconstruction/physical-case-2.mp4",
+        "poster": "/research/rgbd-motion-reconstruction/physical-case-2-poster.webp",
+        "width": 1280,
+        "height": 320,
+        "title": {
+          "zh": "实物案例 2 · 实拍与三维重建",
+          "en": "Physical case 2 · recorded and reconstructed motion"
+        },
+        "caption": {
+          "zh": "补充视频 3 · 实拍与双视角重建。",
+          "en": "Supplementary Video 3 · recorded and reconstructed views."
+        }
+      },
+      {
+        "type": "note",
+        "heading": {
+          "zh": "适用范围",
+          "en": "Scope"
+        },
+        "body": {
+          "zh": "实物实验没有独立位姿与位移真值，用于展示可行性。处理速度约 6.5 fps，低于 30 fps 采集速度；当前依赖刚体假设、可用深度和可见地面。",
+          "en": "Physical tests demonstrate feasibility without independent pose or displacement ground truth. Processing is about 6.5 fps versus 30 fps capture; rigid objects, usable depth and visible floors are assumed."
+        }
+      }
+    ],
+    "overview": {
+      "zh": "建筑晃动之外，家具和设备的滑移、倾覆也可能威胁人员安全。我们同时感知非结构构件的位移、转动与楼层运动，在三维场景中还原灾害过程，为室内风险分析提供依据。",
+      "en": "Beyond building motion, sliding and overturning furniture or equipment can threaten occupants. We measure object displacement and rotation alongside floor motion, reconstructing the event in 3D to support indoor risk analysis."
+    },
+    "publication": {
+      "title": "Depth vision-based indoor building behavior reconstruction in disaster scenarios: Integrating structural displacement and non-structural motion",
+      "venue": "Journal of Building Engineering · 132 · 117474 · 2026",
+      "status": {
+        "zh": "已发表 · 2026.10.04 在线发表",
+        "en": "Published · Online 4 October 2026"
+      },
+      "href": "https://doi.org/10.1016/j.jobe.2026.117474"
+    },
+    "showcase": {
+      "subject": {
+        "zh": "非结构构件",
+        "en": "Non-structural components"
+      },
+      "summary": {
+        "zh": "家具和设备如何滑移、晃动、倾覆？恢复三维运动，还原室内风险过程。",
+        "en": "How did furniture and equipment slide, shake or overturn? Recover their 3D motion to reconstruct indoor hazards."
+      },
+      "images": [
+        {
+          "src": "/research/rgbd-motion-reconstruction/pose-pipeline.webp",
+          "alt": {
+            "zh": "非结构构件 6D 位姿估计流程：RGB、深度、物体三维模型与首帧掩码共同输入位姿估计器。来源：论文图 1。",
+            "en": "NSC 6D pose pipeline: RGB, depth, object models and first-frame masks feed the pose estimator. Source: Fig. 1."
+          },
+          "label": {
+            "zh": "6D 位姿感知",
+            "en": "6D pose sensing"
+          },
+          "width": 1304,
+          "height": 700
+        },
+        {
+          "src": "/research/rgbd-motion-reconstruction/simulation-tracking.webp",
+          "alt": {
+            "zh": "三个相机视角下的位姿跟踪关键帧，覆盖物体晃动和倾覆过程。来源：论文图 7。",
+            "en": "Pose-tracking keyframes from three camera viewpoints, including object shaking and overturning. Source: Fig. 7."
+          },
+          "label": {
+            "zh": "运动跟踪",
+            "en": "Motion tracking"
+          },
+          "width": 1658,
+          "height": 889
+        },
+        {
+          "src": "/research/rgbd-motion-reconstruction/scene-reconstruction.webp",
+          "alt": {
+            "zh": "实物画面与虚拟空间中的运动重建：同一过程可从多个视角观察。来源：论文图 15。",
+            "en": "Physical scenes and their reconstructed motion in virtual space, viewed from multiple perspectives. Source: Fig. 15."
+          },
+          "label": {
+            "zh": "三维重建",
+            "en": "3D reconstruction"
+          },
+          "width": 1658,
+          "height": 814
+        }
+      ]
+    }
+  },
+  {
+    "slug": "disaster-video-agent",
+    "title": {
+      "zh": "基于视觉智能体的灾害视频理解",
+      "en": "Disaster video understanding with visual agents"
+    },
+    "area": {
+      "zh": "视觉智能体",
+      "en": "Visual agents"
+    },
+    "period": {
+      "zh": "2026.02 – 至今",
+      "en": "2026.02 – Present"
+    },
+    "bullets": [
+      {
+        "label": {
+          "zh": "目标问题",
+          "en": "Research problem"
+        },
+        "text": {
+          "zh": "面向地震监控视频，识别撤离、摔倒、起身等可见行为，并定位支持判断的关键时间片段。",
+          "en": "Identify visible actions such as evacuation, falling and getting up in earthquake surveillance footage, and locate the temporal evidence supporting each judgment."
+        }
+      },
+      {
+        "label": {
+          "zh": "灾害视频数据与评测",
+          "en": "Dataset and evaluation"
+        },
+        "text": {
+          "zh": "基于 Quake-Indoor302 构建 R97 评测子集：**97 段视频、582 个视频–行为判断任务**，覆盖 11 次真实地震与六类行为；按视频划分开发集和测试集。",
+          "en": "Build R97 from Quake-Indoor302: **97 videos and 582 video–behavior episodes**, covering 11 real earthquakes and six action classes, with video-level development/test splits."
+        }
+      },
+      {
+        "label": {
+          "zh": "视觉智能体框架",
+          "en": "Agent architecture"
+        },
+        "text": {
+          "zh": "提出**观察器–规划器–判定器**三级架构，以低分辨率连续观察维护跨时序状态，再由智能体根据任务主动选择候选时间区间，并调用局部高清帧完成最终证据判定。",
+          "en": "Propose an **observer–planner–judge** architecture: maintain temporal state through continuous low-resolution observation, select task-relevant candidate intervals, and inspect local high-resolution frames for evidence-based decisions."
+        }
+      },
+      {
+        "label": {
+          "zh": "效率与性能验证",
+          "en": "Efficiency and performance"
+        },
+        "text": {
+          "zh": "在 **65 段测试视频、390 个任务**上，相同最大视觉帧预算下三次运行的召回率与 F1 比均匀输入平均提高 **22.93、9.47 个百分点**，但误报率也上升；高清候选片段平均覆盖时长 **11.76%**。替换为 Qwen3.7-Flash 后，单次完整流程的 BA / F1 达 **72.66% / 65.56%**。",
+          "en": "On **65 held-out videos and 390 episodes**, three-run mean recall and F1 improve by **22.93 and 9.47 percentage points** over uniform direct input at the same maximum frame budget, with more false positives. High-resolution candidates cover **11.76%** of video duration on average. A single full-pipeline Qwen3.7-Flash run reaches **72.66% BA / 65.56% F1**."
+        }
+      },
+      {
+        "label": {
+          "zh": "相关成果",
+          "en": "Outputs"
+        },
+        "text": {
+          "zh": "SEES 论文已投稿至 **SCIHM**，尚未发表；相关研究获 2026 年第十三届海峡两岸土木工程监测与控制研讨会学生论文优秀奖。",
+          "en": "The SEES paper has been **submitted to SCIHM** and is not yet published. Related work received the Outstanding Student Paper Award at the 13th Cross-Strait Symposium on Civil Engineering Monitoring and Control (2026)."
+        }
+      }
+    ],
+    "details": [
+      {
+        "type": "chapter",
+        "id": "framework",
+        "heading": {
+          "zh": "三个角色，一条证据链",
+          "en": "Three roles, one evidence chain"
+        },
+        "label": {
+          "zh": "01 · 问题与方法",
+          "en": "01 · Problem and method"
+        },
+        "body": {
+          "zh": "**Observer → Planner → Judge**：连续观察、选择候选片段、高清核验，让“摔倒”与“主动俯身”等相近动作有据可辨。",
+          "en": "**Observer → Planner → Judge**: observe continuously, select candidate intervals, then verify high-resolution evidence to distinguish actions such as falling and crouching."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/disaster-video-agent/sees-framework.webp",
+        "alt": {
+          "zh": "研究动机与 SEES 框架：稀疏采样可能错过关键瞬间，增加采样也会引入冗余；通过顺序观察、候选选择与局部核验重新分配视觉预算。来源：手稿图 1（示意画面）。",
+          "en": "Motivation and SEES framework: sparse sampling may miss decisive moments, while denser sampling adds redundancy. Sequential observation, candidate selection and local verification reorganize the visual budget. Source: manuscript Fig. 1 (illustrative frames)."
+        },
+        "caption": {
+          "zh": "SEES 整体框架（示意画面）· 图 1",
+          "en": "SEES framework (illustrative frames) · Fig. 1"
+        },
+        "width": 1448,
+        "height": 1086
+      },
+      {
+        "type": "text",
+        "heading": {
+          "zh": "数据：关键证据只有几秒",
+          "en": "Data: evidence lasts only seconds"
+        },
+        "body": {
+          "zh": "R97 包含 **97 段地震视频、582 个行为判断任务**。视频中位时长 30.74 秒，关键证据仅 2.87 秒；32 段用于开发，65 段用于独立测试。",
+          "en": "R97 contains **97 earthquake videos and 582 action judgments**. Median video duration is 30.74 s, but evidence lasts only 2.87 s. The video-level split uses 32 clips for development and 65 for testing."
+        }
+      },
+      {
+        "type": "chapter",
+        "id": "evidence",
+        "heading": {
+          "zh": "更容易找到短促动作",
+          "en": "Finding brief actions"
+        },
+        "label": {
+          "zh": "02 · 实验与证据",
+          "en": "02 · Experiments and evidence"
+        },
+        "body": {
+          "zh": "相同模型与最大帧预算下，三次测试的平均召回率提高 **22.93 个百分点**，F1 提高 **9.47 个百分点**，同时误报率上升。",
+          "en": "With the same model and maximum frame budget, three-run mean recall improves by **22.93 percentage points** and F1 by **9.47 points**, with more false positives."
+        }
+      },
+      {
+        "type": "table",
+        "heading": {
+          "zh": "独立测试集上的主要结果",
+          "en": "Main held-out test results"
+        },
+        "columns": [
+          {
+            "zh": "指标",
+            "en": "Metric"
+          },
+          {
+            "zh": "均匀输入基线",
+            "en": "Uniform Direct"
+          },
+          {
+            "zh": "SEES",
+            "en": "SEES"
+          }
+        ],
+        "rows": [
+          [
+            "BA (%)",
+            "64.78 ± 0.28",
+            "67.88 ± 1.67"
+          ],
+          [
+            "TPR (%)",
+            "38.53 ± 0.41",
+            "61.47 ± 3.91"
+          ],
+          [
+            "F1 (%)",
+            "49.92 ± 0.48",
+            "59.39 ± 2.37"
+          ],
+          [
+            "FPR (%)",
+            "8.97 ± 0.23",
+            "25.70 ± 0.70"
+          ],
+          [
+            "Precision (%)",
+            "70.87 ± 0.67",
+            "57.49 ± 1.08"
+          ]
+        ],
+        "note": {
+          "zh": "65 段视频、390 个任务，三次独立运行的均值 ± 样本标准差（百分点）。两种方法使用相同模型 Qwen3-VL-Flash，以及相同最大视觉帧预算：64 张 480p 全局帧 + 至多 24 张 720p 高清帧。BA：平衡准确率；TPR：真正例率 / 召回率；FPR：假正例率。",
+          "en": "65 videos and 390 episodes; mean ± sample standard deviation (percentage points) over three independent runs. Both use Qwen3-VL-Flash and the same maximum visual-frame budget: 64 global 480p frames plus up to 24 high-resolution 720p frames. BA: balanced accuracy; TPR: recall; FPR: false-positive rate."
+        }
+      },
+      {
+        "type": "text",
+        "body": {
+          "zh": "固定候选规模和判定器，只改变时间位置，召回率与 F1 仍提高 **27.66、12.91 个百分点**。",
+          "en": "With candidate size and judge fixed, changing only temporal locations still improves recall and F1 by **27.66 and 12.91 points**."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/disaster-video-agent/core-results.webp",
+        "alt": {
+          "zh": "上：主实验三次运行的均值与波动；下：固定候选规模和判定器后，仅改变时间位置的效果及视频级聚类 95% 置信区间。两幅子图对应不同对照设置。来源：手稿图 2。",
+          "en": "Top: mean and variation across three main-comparison runs. Bottom: effects of changing only candidate locations, with video-clustered 95% confidence intervals. The panels represent different controlled comparisons. Source: manuscript Fig. 2."
+        },
+        "caption": {
+          "zh": "三次运行结果与时间位置对照（95% 置信区间）· 图 2",
+          "en": "Three-run results and location control (95% confidence intervals) · Fig. 2"
+        },
+        "width": 964,
+        "height": 1044
+      },
+      {
+        "type": "text",
+        "heading": {
+          "zh": "控制结构对比",
+          "en": "Control-structure comparison"
+        },
+        "body": {
+          "zh": "受控实现中，SEES 的 BA 为 **69.37%**。图中各方法统一模型、预算与判定器，结果来自测试集第 1 次运行。",
+          "en": "SEES reaches **69.37% BA** in controlled implementations sharing the model, budget and judge. These are first-run test results."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/disaster-video-agent/agent-comparison.webp",
+        "alt": {
+          "zh": "统一条件下的控制结构比较：平衡准确率与召回率—误报率工作点。CR 表示受控复现。来源：手稿图 3。",
+          "en": "Controlled architecture comparison: balanced accuracy and recall–false-positive operating points. CR denotes controlled reproduction. Source: manuscript Fig. 3."
+        },
+        "caption": {
+          "zh": "统一条件的受控复现，非原系统官方成绩 · 图 3",
+          "en": "Controlled reproductions, not official full-system scores · Fig. 3"
+        },
+        "width": 960,
+        "height": 1112
+      },
+      {
+        "type": "chapter",
+        "id": "analysis",
+        "heading": {
+          "zh": "把预算用在关键位置",
+          "en": "Spend the budget on key moments"
+        },
+        "label": {
+          "zh": "03 · 机制与扩展",
+          "en": "03 · Mechanisms and extensions"
+        },
+        "body": {
+          "zh": "详细状态记录与跨窗口记忆支持候选选择；平均只对视频时长的 **11.76%** 做局部高清核验。",
+          "en": "Detailed state records and cross-window memory support candidate selection. Local high-resolution checks cover **11.76%** of video duration on average."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/disaster-video-agent/temporal-budget.webp",
+        "alt": {
+          "zh": "上：开发集候选深度的召回—误报取舍；下：测试集时间检索召回率。前三根柱采用 IoU ≥ 0.3，最后一根采用 IoU ≥ 0.1。来源：手稿图 4。",
+          "en": "Top: the development-set trade-off with candidate depth. Bottom: temporal retrieval recall on the test split; the first three bars use IoU ≥ 0.3 and the last uses IoU ≥ 0.1. Source: manuscript Fig. 4."
+        },
+        "caption": {
+          "zh": "上：开发集候选深度；下：测试集检索召回，前三柱 IoU ≥ 0.3 · 图 4",
+          "en": "Top: development-set candidate depth; bottom: test retrieval, first three bars at IoU ≥ 0.3 · Fig. 4"
+        },
+        "width": 964,
+        "height": 1252
+      },
+      {
+        "type": "text",
+        "heading": {
+          "zh": "模型能力的进一步增益",
+          "en": "Gains from stronger models"
+        },
+        "body": {
+          "zh": "完整流程换用 **Qwen3.7-Flash** 后，BA / F1 达 **72.66% / 65.56%**。这是模型替换实验的单次结果。",
+          "en": "A full **Qwen3.7-Flash** pipeline reaches **72.66% BA / 65.56% F1** in the single-run model-replacement experiment."
+        }
+      },
+      {
+        "type": "image",
+        "src": "/research/disaster-video-agent/model-replacement.webp",
+        "alt": {
+          "zh": "模型替换实验：上图只替换 Planner；下图对比原配置、固定候选仅替换 Judge、完整流程替换。来源：手稿图 5。",
+          "en": "Model replacements: planner-only localization above; original configuration, judge-only replacement on fixed candidates, and full-pipeline replacement below. Source: manuscript Fig. 5."
+        },
+        "caption": {
+          "zh": "分别替换 Planner、Judge 与完整流程 · 图 5",
+          "en": "Planner-only, judge-only and full-pipeline replacements · Fig. 5"
+        },
+        "width": 964,
+        "height": 1248
+      },
+      {
+        "type": "note",
+        "heading": {
+          "zh": "适用范围",
+          "en": "Scope"
+        },
+        "body": {
+          "zh": "适合筛选片段供人工复核。误报、遮挡和模糊仍是限制；11.76% 表示时间覆盖率，不是计算成本。",
+          "en": "Intended for evidence screening and human review. False positives, occlusion and blur remain limitations; 11.76% measures temporal coverage, not compute cost."
+        }
+      }
+    ],
+    "overview": {
+      "zh": "灾害中，人的摔倒、撤离和避险状态同样需要被看见。这些变化往往只持续几秒，容易淹没在混乱画面中。SEES 从视频中寻找关键行为证据，为人员状态感知和人工复核提供线索。",
+      "en": "Falls, evacuation and sheltering are essential parts of understanding a disaster. These changes may last only seconds and be lost in chaotic footage. SEES finds action evidence in video to support human-state assessment and review."
+    },
+    "publication": {
+      "title": "SEES: Sequential Evidence Exploration and Selection for Short High-Dynamic Disaster Videos",
+      "venue": "SCIHM",
+      "status": {
+        "zh": "已投稿 · 尚未发表",
+        "en": "Submitted · Not yet published"
+      }
+    },
+    "showcase": {
+      "subject": {
+        "zh": "人",
+        "en": "People"
+      },
+      "summary": {
+        "zh": "人是否摔倒、撤离或避险？找到关键片段，为灾后人员状态复核提供线索。",
+        "en": "Did someone fall, evacuate or seek shelter? Find decisive evidence for reviewing human states after a disaster."
+      },
+      "images": [
+        {
+          "src": "/research/disaster-video-agent/sees-framework.webp",
+          "alt": {
+            "zh": "研究动机与 SEES 框架：稀疏采样可能错过关键瞬间，增加采样也会引入冗余；通过顺序观察、候选选择与局部核验重新分配视觉预算。来源：手稿图 1（示意画面）。",
+            "en": "Motivation and SEES framework: sparse sampling may miss decisive moments, while denser sampling adds redundancy. Sequential observation, candidate selection and local verification reorganize the visual budget. Source: manuscript Fig. 1 (illustrative frames)."
+          },
+          "label": {
+            "zh": "证据探索",
+            "en": "Evidence exploration"
+          },
+          "width": 1448,
+          "height": 1086
+        },
+        {
+          "src": "/research/disaster-video-agent/core-results.webp",
+          "alt": {
+            "zh": "上：主实验三次运行的均值与波动；下：固定候选规模和判定器后，仅改变时间位置的效果及视频级聚类 95% 置信区间。两幅子图对应不同对照设置。来源：手稿图 2。",
+            "en": "Top: mean and variation across three main-comparison runs. Bottom: effects of changing only candidate locations, with video-clustered 95% confidence intervals. The panels represent different controlled comparisons. Source: manuscript Fig. 2."
+          },
+          "label": {
+            "zh": "行为识别",
+            "en": "Action recognition"
+          },
+          "width": 964,
+          "height": 1044
+        },
+        {
+          "src": "/research/disaster-video-agent/temporal-budget.webp",
+          "alt": {
+            "zh": "上：开发集候选深度的召回—误报取舍；下：测试集时间检索召回率。前三根柱采用 IoU ≥ 0.3，最后一根采用 IoU ≥ 0.1。来源：手稿图 4。",
+            "en": "Top: the development-set trade-off with candidate depth. Bottom: temporal retrieval recall on the test split; the first three bars use IoU ≥ 0.3 and the last uses IoU ≥ 0.1. Source: manuscript Fig. 4."
+          },
+          "label": {
+            "zh": "关键片段定位",
+            "en": "Finding key moments"
+          },
+          "width": 964,
+          "height": 1252
+        }
+      ]
+    }
+  }
+]
