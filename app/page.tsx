@@ -65,14 +65,7 @@ export default function Home() {
     event.preventDefault();
     setMobileNavOpen(false);
     window.history.pushState({}, "", `#${id}`);
-    document
-      .getElementById(id)
-      ?.scrollIntoView({
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "auto"
-          : "smooth",
-        block: "start",
-      });
+    document.getElementById(id)?.scrollIntoView({ block: "start" });
   }
   return (
     <div className="site-shell">
