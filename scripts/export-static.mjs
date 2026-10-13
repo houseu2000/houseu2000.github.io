@@ -11,10 +11,10 @@ workerUrl.searchParams.set("export", `${process.pid}-${Date.now()}`);
 const { default: worker } = await import(workerUrl.href);
 const clientDirectory = new URL("../dist/client/", import.meta.url);
 
-async function render(path, expectedStatus = 200) {
+async function render(path, expectedStatus = 200, accept = "text/html") {
   const response = await worker.fetch(
     new Request(`http://localhost${path}`, {
-      headers: { accept: "text/html" },
+      headers: { accept },
     }),
     {
       ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) },
@@ -38,9 +38,15 @@ if (
 }
 
 await mkdir(clientDirectory, { recursive: true });
+await writeFile(new URL(".nojekyll", clientDirectory), "", "utf8");
 await writeFile(
   new URL("index.html", clientDirectory),
   await render("/"),
+  "utf8",
+);
+await writeFile(
+  new URL(".rsc", clientDirectory),
+  await render("/.rsc", 200, "text/x-component"),
   "utf8",
 );
 for (const slug of slugs) {
@@ -49,6 +55,11 @@ for (const slug of slugs) {
   await writeFile(
     new URL("index.html", directory),
     await render(`/research/${slug}/`),
+    "utf8",
+  );
+  await writeFile(
+    new URL(`research/${slug}.rsc`, clientDirectory),
+    await render(`/research/${slug}.rsc`, 200, "text/x-component"),
     "utf8",
   );
 }

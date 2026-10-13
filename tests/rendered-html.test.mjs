@@ -10,6 +10,18 @@ const projects = JSON.parse(
 );
 const home = await readFile(new URL("index.html", client), "utf8");
 
+test("static pages include their RSC payloads for client navigation", async () => {
+  await access(new URL(".nojekyll", client));
+  for (const path of [
+    ".rsc",
+    ...projects.map(({ slug }) => `research/${slug}.rsc`),
+  ]) {
+    const payload = await readFile(new URL(path, client), "utf8");
+    assert.match(payload, /__artifactCompatibility/);
+    assert.doesNotMatch(payload, /<!DOCTYPE html>/i);
+  }
+});
+
 test("homepage exports the seven resume sections in reading order", () => {
   let previous = -1;
   for (const id of [
