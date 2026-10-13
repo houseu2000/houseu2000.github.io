@@ -7,6 +7,7 @@ import {
   type ResearchVideo,
 } from "../../research-data";
 import { LanguageSwitch, RichText, useLanguage } from "../../resume-components";
+import { navigateToAnchor } from "../../anchor-navigation";
 
 function VideoFigure({
   video,
@@ -68,7 +69,11 @@ export default function ResearchDetail({
   const chapters = project.details.filter((block) => block.type === "chapter");
   return (
     <div className="detail-shell">
-      <a className="skip-link" href="#research-content">
+      <a
+        className="skip-link"
+        href="#research-content"
+        onClick={(event) => navigateToAnchor(event, "research-content", true)}
+      >
         {zh ? "跳转到研究内容" : "Skip to research content"}
       </a>
       <nav
@@ -80,7 +85,7 @@ export default function ResearchDetail({
         </a>
         <LanguageSwitch language={language} onClick={toggleLanguage} />
       </nav>
-      <main id="research-content">
+      <main id="research-content" tabIndex={-1}>
         <header className="detail-header">
           <h1>{project.title[language]}</h1>
           <span className="entry-date">{project.period[language]}</span>
@@ -96,7 +101,11 @@ export default function ResearchDetail({
             aria-label={zh ? "本页目录" : "On this page"}
           >
             {chapters.map((chapter) => (
-              <a href={`#${chapter.id}`} key={chapter.id}>
+              <a
+                href={`#${chapter.id}`}
+                key={chapter.id}
+                onClick={(event) => navigateToAnchor(event, chapter.id)}
+              >
                 {chapter.label[language]}
               </a>
             ))}

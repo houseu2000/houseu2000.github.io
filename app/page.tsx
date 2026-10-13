@@ -8,6 +8,7 @@ import {
   type Language,
 } from "./site-data";
 import { researchProjects } from "./research-data";
+import { navigateToAnchor } from "./anchor-navigation";
 import {
   activities,
   experiences,
@@ -62,18 +63,23 @@ export default function Home() {
     return () => document.removeEventListener("keydown", close);
   }, [mobileNavOpen]);
   function navigate(event: MouseEvent<HTMLAnchorElement>, id: string) {
-    event.preventDefault();
-    setMobileNavOpen(false);
-    window.history.pushState({}, "", `#${id}`);
-    document.getElementById(id)?.scrollIntoView({ block: "start" });
+    if (navigateToAnchor(event, id)) setMobileNavOpen(false);
   }
   return (
     <div className="site-shell">
-      <a className="skip-link" href="#main-content">
+      <a
+        className="skip-link"
+        href="#main-content"
+        onClick={(event) => navigateToAnchor(event, "main-content", true)}
+      >
         {zh ? "跳转到主要内容" : "Skip to main content"}
       </a>
       <header className="site-header">
-        <a className="mobile-wordmark" href="#top">
+        <a
+          className="mobile-wordmark"
+          href="#top"
+          onClick={(event) => navigateToAnchor(event, "top")}
+        >
           侯佳乐<span>Jiale Hou</span>
         </a>
         <nav
@@ -81,7 +87,11 @@ export default function Home() {
           aria-label={zh ? "主导航" : "Primary navigation"}
         >
           {resumeSections.slice(1, 6).map((section) => (
-            <a key={section.id} href={`#${section.id}`}>
+            <a
+              key={section.id}
+              href={`#${section.id}`}
+              onClick={(event) => navigateToAnchor(event, section.id)}
+            >
               {section[language]}
             </a>
           ))}
@@ -183,11 +193,15 @@ export default function Home() {
             GitHub ↗
           </a>
         </div>
-        <a className="rail-back-top" href="#top">
+        <a
+          className="rail-back-top"
+          href="#top"
+          onClick={(event) => navigateToAnchor(event, "top")}
+        >
           {zh ? "回到顶部" : "Back to top"} ↑
         </a>
       </aside>
-      <main className="resume-main" id="main-content">
+      <main className="resume-main" id="main-content" tabIndex={-1}>
         <section
           className="intro-section"
           id="about"
